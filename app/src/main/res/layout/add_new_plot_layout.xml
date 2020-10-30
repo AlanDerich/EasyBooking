@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:cardElevation="4dp"
+    >
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/filter_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:padding="16dp"
+        android:scrollbarFadeDuration="1000">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:orientation="vertical">
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/edtPlotName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Name"
+                android:textColor="@color/colorPrimary"
+                android:textColorHint="@color/colorPrimary"
+                android:textSize="18sp"
+                app:met_baseColor="@color/colorPrimary"
+                app:met_floatingLabel="highlight"
+                app:met_maxCharacters="15"
+                app:met_primaryColor="@color/colorPrimary"
+                app:met_singleLineEllipsis="true" />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/edtPlotLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Location"
+                android:inputType="textMultiLine"
+                android:textColor="@color/colorPrimary"
+                android:textColorHint="@color/colorPrimary"
+                android:textSize="18sp"
+                app:met_baseColor="@color/colorPrimary"
+                app:met_floatingLabel="highlight"
+                app:met_maxCharacters="11"
+                app:met_primaryColor="@color/colorPrimary"
+                app:met_singleLineEllipsis="true" />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/edtPhoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="0712345678"
+                android:inputType="number"
+                android:textColor="@color/colorPrimary"
+                android:textColorHint="@color/colorPrimary"
+                android:textSize="18sp"
+                app:met_baseColor="@color/colorPrimary"
+                app:met_floatingLabel="highlight"
+                app:met_maxCharacters="11"
+                app:met_primaryColor="@color/colorPrimary"
+                app:met_singleLineEllipsis="true" />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/edtPlotComments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Other comments(rules e.t.c)"
+                android:inputType="text"
+                android:textColor="@color/colorPrimary"
+                android:textColorHint="@color/colorPrimary"
+                android:textSize="18sp"
+                app:met_baseColor="@color/colorPrimary"
+                app:met_floatingLabel="highlight"
+                app:met_maxCharacters="100"
+                app:met_primaryColor="@color/colorPrimary"
+                app:met_singleLineEllipsis="true" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchWater"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Water"
+                android:textColor="#673AB7"
+                android:textSize="18sp" />
+
+            <CheckBox
+                android:id="@+id/checkBoxWaterPaid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Paid"
+                android:visibility="gone" />
+
+            <CheckBox
+                android:id="@+id/checkBoxWaterFree"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Free"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchElectricity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Electricity"
+                android:textColor="#673AB7"
+                android:textSize="18sp" />
+
+            <CheckBox
+                android:id="@+id/checkBoxElectricityFree"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tokens"
+                android:visibility="gone" />
+
+            <CheckBox
+                android:id="@+id/checkBoxElectricityPaid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="PostPaid"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchWifi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Wifi"
+                android:textColor="#673AB7"
+                android:textSize="18sp" />
+
+            <CheckBox
+                android:id="@+id/checkBoxWifiFree"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Free"
+                android:visibility="gone" />
+
+            <CheckBox
+                android:id="@+id/checkBoxWifiPaid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Paid"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/btnProductSelect"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_margin="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_weight="1"
+                    android:text="Select Image"
+                    android:textColor="@android:color/widget_edittext_dark"
+                    app:cornerRadius="5dp" />
+
+                <Button
+                    android:id="@+id/btnProductUpload"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_margin="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_weight="1"
+                    android:text="Update"
+                    android:textColor="@android:color/widget_edittext_dark"
+                    app:cornerRadius="5dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+
+</androidx.cardview.widget.CardView>

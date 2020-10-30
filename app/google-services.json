@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "120221479591",
+    "firebase_url": "https://affable-ruler-257121.firebaseio.com",
+    "project_id": "affable-ruler-257121",
+    "storage_bucket": "affable-ruler-257121.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:120221479591:android:0a85cf521aef3cb0ada182",
+        "android_client_info": {
+          "package_name": "com.polycarp.easybooking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "120221479591-pdqv5v7mubp0olhaot3qg4go2uo52pq6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.polycarp.easybooking",
+            "certificate_hash": "7fd4e3a1b95de1ee15046097487bb57a8da47691"
+          }
+        },
+        {
+          "client_id": "120221479591-79a1r267ufqi4vvo6b1h52e8nj2j1ev6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-qlTeFSv5HYJwtB65g9HMRRgdBVCEoJI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "120221479591-79a1r267ufqi4vvo6b1h52e8nj2j1ev6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

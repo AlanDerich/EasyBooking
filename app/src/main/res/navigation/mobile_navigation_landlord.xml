@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation_landlord"
+    app:startDestination="@id/nav_landlord_houses">
+
+    <fragment
+        android:id="@+id/nav_bookings"
+        android:name="com.polycarp.easybooking.mainlandlord.landlordui.BookingsFragment"
+        android:label="fragment_bookings"
+        tools:layout="@layout/fragment_bookings" />
+    <fragment
+        android:id="@+id/nav_landlord_houses"
+        android:name="com.polycarp.easybooking.mainlandlord.landlordui.HomeFragmentLandlord"
+        android:label="fragment_home_landlord"
+        tools:layout="@layout/fragment_home_landlord" />
+    <fragment
+        android:id="@+id/nav_add_house"
+        android:name="com.polycarp.easybooking.mainlandlord.landlordui.AddHouseFragment"
+        android:label="fragment_add_house"
+        tools:layout="@layout/fragment_add_house" />
+    <fragment
+        android:id="@+id/nav_viewHousesInPlotLandlordFragment"
+        android:name="com.polycarp.easybooking.mainlandlord.landlordui.ViewHousesInPlotLandlordFragment"
+        android:label="fragment_view_houses_in_plot_landlord"
+        tools:layout="@layout/fragment_view_houses_in_plot_landlord" />
+</navigation>

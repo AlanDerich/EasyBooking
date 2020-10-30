@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:cardElevation="4dp"
+    >
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/filter_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:padding="16dp"
+        android:scrollbarFadeDuration="1000">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinnerAllTypes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </androidx.appcompat.widget.AppCompatSpinner>
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/edtHouseRent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Rent"
+                android:inputType="number"
+                android:textColor="@color/colorPrimary"
+                android:textColorHint="@color/colorPrimary"
+                android:textSize="18sp"
+                app:met_baseColor="@color/colorPrimary"
+                app:met_floatingLabel="highlight"
+                app:met_maxCharacters="15"
+                app:met_primaryColor="@color/colorPrimary"
+                app:met_singleLineEllipsis="true" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchDeposit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Deposit"
+                android:textColor="#673AB7"
+                android:textSize="18sp" />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/edtHouseDeposit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Deposit amount"
+                android:inputType="number"
+                android:textColor="@color/colorPrimary"
+                android:textColorHint="@color/colorPrimary"
+                android:textSize="18sp"
+                android:visibility="visible"
+                app:met_baseColor="@color/colorPrimary"
+                app:met_floatingLabel="highlight"
+                app:met_maxCharacters="15"
+                app:met_primaryColor="@color/colorPrimary"
+                app:met_singleLineEllipsis="true" />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/edtHouseNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="House Number"
+                android:inputType="number"
+                android:textColor="@color/colorPrimary"
+                android:textColorHint="@color/colorPrimary"
+                android:textSize="18sp"
+                app:met_baseColor="@color/colorPrimary"
+                app:met_floatingLabel="highlight"
+                app:met_maxCharacters="15"
+                app:met_primaryColor="@color/colorPrimary"
+                app:met_singleLineEllipsis="true" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/btnHousePicSelect"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_margin="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_weight="1"
+                    android:text="Select Image"
+                    android:textColor="@android:color/widget_edittext_dark"
+                    app:cornerRadius="5dp" />
+
+                <Button
+                    android:id="@+id/btnHousePicUpload"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_margin="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_weight="1"
+                    android:text="Update"
+                    android:textColor="@android:color/widget_edittext_dark"
+                    app:cornerRadius="5dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+
+</androidx.cardview.widget.CardView>
