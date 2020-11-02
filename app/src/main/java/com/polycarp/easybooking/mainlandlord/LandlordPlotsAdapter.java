@@ -74,7 +74,6 @@ public class LandlordPlotsAdapter extends RecyclerView.Adapter<LandlordPlotsAdap
                 args.putString("plotOwner",mPlots.get(position).getOwner());
                 fragmentStaff.setArguments(args);
                 transactionStaff.commit();
-                holder.mainLayout.removeAllViews();
             }
         });
     }
