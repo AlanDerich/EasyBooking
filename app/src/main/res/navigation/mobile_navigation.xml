@@ -12,14 +12,18 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
+        android:id="@+id/nav_normal_bookings"
         android:name="com.polycarp.easybooking.ui.bookings.BookingsFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:label="Bookings"
+        tools:layout="@layout/fragment_normal_bookings" />
 
     <fragment
         android:id="@+id/nav_slideshow"
         android:name="com.polycarp.easybooking.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
+    <fragment
+        android:id="@+id/nav_houseInfoFragment"
+        android:name="com.polycarp.easybooking.HouseInfoFragment"
+        android:label="HouseInfoFragment" />
 </navigation>

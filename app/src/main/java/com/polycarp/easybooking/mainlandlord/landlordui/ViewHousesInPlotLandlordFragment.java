@@ -254,7 +254,7 @@ public class ViewHousesInPlotLandlordFragment extends Fragment implements LandLo
                     mNewHouses.setHouseImage(plotIMage);
                     mNewHouses.setOwner(owner);
                     mNewHouses.setHouseNumber(edtHouseNumber.getText().toString().trim());
-                    db.collection(plotName).document(mUser.getEmail()).collection("AllHouses").document(plotName)
+                    db.collection(plotName).document(mUser.getEmail()).collection("AllHouses").document(plotName + edtHouseNumber.getText().toString().trim())
                             .set(mNewHouses)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
@@ -443,47 +443,37 @@ public class ViewHousesInPlotLandlordFragment extends Fragment implements LandLo
 
             }
         });
-        switchDeposit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    edtDeposit.setVisibility(View.VISIBLE);
-                } else {
-                    edtDeposit.setVisibility(View.GONE);
-                    deposit = "none";
-                }
+        switchDeposit.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                edtDeposit.setVisibility(View.VISIBLE);
+            } else {
+                edtDeposit.setVisibility(View.GONE);
+                deposit = "none";
             }
         });
         //event for button
         alertDialog.setView(add_menu_layout);
         alertDialog.setIcon(R.drawable.ic_house);
-        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int i) {
-                if(edtRent.getText().toString() !=  null)
-                {
-                    HousesContainers mNewHouses=new HousesContainers(edtRent.getText().toString().trim(),housesContainers.getLocation(),edtDeposit.getText().toString().trim(),housesContainers.getDetails(),spCategories.getSelectedItem().toString(),housesContainers.getPhoneNo(),housesContainers.getPlotName(),housesContainers.getHouseImage(),housesContainers.getOwner(),edtHouseNumber.getText().toString().trim(),0);
-                    db.collection(housesContainers.getPlotName()).document(housesContainers.getOwner()).collection("AllHouses").document(housesContainers.getPlotName())
-                            .set(mNewHouses)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
+        alertDialog.setPositiveButton("YES", (dialog, i) -> {
+            if(edtRent.getText().toString() !=  null)
+            {
+                HousesContainers mNewHouses=new HousesContainers(edtRent.getText().toString().trim(),housesContainers.getLocation(),edtDeposit.getText().toString().trim(),housesContainers.getDetails(),spCategories.getSelectedItem().toString(),housesContainers.getPhoneNo(),housesContainers.getPlotName(),housesContainers.getHouseImage(),housesContainers.getOwner(),edtHouseNumber.getText().toString().trim(),0);
+                db.collection(housesContainers.getPlotName()).document(housesContainers.getOwner()).collection("AllHouses").document(housesContainers.getPlotName() + housesContainers.getHouseNumber())
+                        .set(mNewHouses)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
 //                                startActivity(new Intent(getContext(), MainActivityAdmin.class));
-                                    Toast.makeText(mContext,"House updated successfully",Toast.LENGTH_LONG).show();
-                                    //initRecyclerView();
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(mContext,"Not saved. Try again later.",Toast.LENGTH_LONG).show();
-                                }
-                            });
-                }
-                else {
-                    Toast.makeText(mContext,"No image selected yet. Please upload an image to continue",Toast.LENGTH_LONG).show();
-                }
-                dialog.dismiss();
+                                Toast.makeText(mContext,"House updated successfully",Toast.LENGTH_LONG).show();
+                                //initRecyclerView();
+                            }
+                        })
+                        .addOnFailureListener(e -> Toast.makeText(mContext,"Not saved. Try again later.",Toast.LENGTH_LONG).show());
             }
+            else {
+                Toast.makeText(mContext,"No image selected yet. Please upload an image to continue",Toast.LENGTH_LONG).show();
+            }
+            dialog.dismiss();
         });
 
         alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {

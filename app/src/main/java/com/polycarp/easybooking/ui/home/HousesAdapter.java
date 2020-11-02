@@ -61,30 +61,27 @@ public class HousesAdapter extends RecyclerView.Adapter<HousesAdapter.ViewHolder
                 .setDefaultRequestOptions(requestOptions)
                 .load(mHouses.get(position).getHouseImage())
                 .into(holder.imgCategory);
-        holder.mainLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle args = new Bundle();
-                AppCompatActivity activity = (AppCompatActivity) view.getContext();
-                Fragment fragmentStaff = new HouseInfoFragment();
-                FragmentTransaction transactionStaff = activity.getSupportFragmentManager().beginTransaction();
-                transactionStaff.replace(R.id.nav_host_fragment,fragmentStaff);
-                transactionStaff.addToBackStack(null);
-                args.putString("rent",mHouses.get(position).getRent());
-                args.putString("location",mHouses.get(position).getLocation());
-                args.putString("deposit",mHouses.get(position).getDeposit());
-                args.putString("houseNumber",mHouses.get(position).getHouseNumber());
-                args.putString("details",mHouses.get(position).getDetails());
+        holder.mainLayout.setOnClickListener(view -> {
+            Bundle args = new Bundle();
+            AppCompatActivity activity = (AppCompatActivity) view.getContext();
+            Fragment fragmentStaff = new HouseInfoFragment();
+            FragmentTransaction transactionStaff = activity.getSupportFragmentManager().beginTransaction();
+            transactionStaff.replace(R.id.nav_host_fragment,fragmentStaff);
+            transactionStaff.addToBackStack(null);
+            args.putString("rent",mHouses.get(position).getRent());
+            args.putString("location",mHouses.get(position).getLocation());
+            args.putString("deposit",mHouses.get(position).getDeposit());
+            args.putString("houseNumber",mHouses.get(position).getHouseNumber());
+            args.putString("details",mHouses.get(position).getDetails());
 
-                args.putString("type",mHouses.get(position).getType());
-                args.putString("phoneNo",mHouses.get(position).getPhoneNo());
-                args.putString("plotName",mHouses.get(position).getPlotName());
-                args.putString("houseImage",mHouses.get(position).getHouseImage());
-                args.putString("owner",mHouses.get(position).getOwner());
-                args.putInt("status",mHouses.get(position).getStatus());
-                fragmentStaff.setArguments(args);
-                transactionStaff.commit();
-            }
+            args.putString("type",mHouses.get(position).getType());
+            args.putString("phoneNo",mHouses.get(position).getPhoneNo());
+            args.putString("plotName",mHouses.get(position).getPlotName());
+            args.putString("houseImage",mHouses.get(position).getHouseImage());
+            args.putString("owner",mHouses.get(position).getOwner());
+            args.putInt("status",mHouses.get(position).getStatus());
+            fragmentStaff.setArguments(args);
+            transactionStaff.commit();
         });
     }
 

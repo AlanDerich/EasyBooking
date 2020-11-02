@@ -81,7 +81,7 @@ public class HomeFragment extends Fragment implements HousesAdapter.OnItemsClick
             }
             private void getPlots(){
                 //mProducts.addAll(Arrays.asList(Products.FEATURED_PRODUCTS));
-                db.collectionGroup("AllHouses").get()
+                db.collectionGroup("AllHouses").whereEqualTo("status",0).get()
                         .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                             @Override
                             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -89,10 +89,10 @@ public class HomeFragment extends Fragment implements HousesAdapter.OnItemsClick
                                 if (!queryDocumentSnapshots.isEmpty()) {
                                     for (DocumentSnapshot snapshot : queryDocumentSnapshots)
                                         mHouses.add(snapshot.toObject(HousesContainers.class));
+                                    initRecyclerView();
                                 } else {
                                     Toast.makeText(mContext, "No plots found. Please add a new plot", Toast.LENGTH_LONG).show();
                                 }
-                                initRecyclerView();
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {

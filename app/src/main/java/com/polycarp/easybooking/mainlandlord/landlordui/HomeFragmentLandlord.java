@@ -14,21 +14,15 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -49,7 +43,6 @@ import com.polycarp.easybooking.mainlandlord.LandlordPlotsAdapter;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -153,7 +146,7 @@ public class HomeFragmentLandlord extends Fragment implements LandlordPlotsAdapt
         switchWater = add_menu_layout.findViewById(R.id.switchWater);
         switchElectricity = add_menu_layout.findViewById(R.id.switchElectricity);
         btnSelect = add_menu_layout.findViewById(R.id.btnProductSelect);
-        btnUpload = add_menu_layout.findViewById(R.id.btnProductUpload);
+        btnUpload = add_menu_layout.findViewById(R.id.btnHouseBook);
         checkBoxElectricityFree=add_menu_layout.findViewById(R.id.checkBoxElectricityFree);
         checkBoxElectricityPaid=add_menu_layout.findViewById(R.id.checkBoxElectricityPaid);
         checkBoxWaterFree=add_menu_layout.findViewById(R.id.checkBoxWaterFree);

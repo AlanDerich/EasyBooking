@@ -3,79 +3,62 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp">
+    android:layout_margin="8dp"
+    android:background="#EDEAEA">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/card_view_plots"
+        android:id="@+id/card_view_normal_bookings"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:background="#EDEAEA"
-        card_view:cardCornerRadius="4dp"
-        card_view:cardElevation="1dp"
-        card_view:cardMaxElevation="2dp">
+        card_view:cardCornerRadius="8dp"
+        card_view:cardElevation="2dp"
+        card_view:cardMaxElevation="4dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dp">
 
-            <ImageView
-                android:id="@+id/imagePlot"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/ic_launcher" />
-
             <LinearLayout
                 android:id="@+id/linLayoutMain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/imagePlot"
                 android:layout_marginTop="10dp"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/titlePlot"
+                    android:id="@+id/title_main_normal_booking"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
-                    android:text="Plot name"
+                    android:text="House name"
                     android:textColor="@color/Black"
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/locationPlot"
+                    android:id="@+id/house_number_normal_booking"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
                     android:singleLine="true"
-                    android:text="location..."
+                    android:text="House Number"
                     android:textColor="@color/Black"
                     android:textSize="15sp" />
 
-
-                <LinearLayout
+                <TextView
+                    android:id="@+id/date_main_normal_booking"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal">
+                    android:singleLine="true"
+                    android:text="date"
+                    android:textColor="@color/Black"
+                    android:textSize="15sp" />
 
-                    <TextView
-                        android:id="@+id/descriptionPlot"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="description..."
-                        android:textColor="@color/darkOrange"
-                        android:textSize="16sp" />
-
-
-                </LinearLayout>
             </LinearLayout>
 
         </RelativeLayout>
