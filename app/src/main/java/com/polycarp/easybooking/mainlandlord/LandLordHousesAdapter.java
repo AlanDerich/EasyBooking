@@ -159,7 +159,7 @@ public class LandLordHousesAdapter extends RecyclerView.Adapter<LandLordHousesAd
     };
 
     private void deleteItem(HousesContainers housesContainers) {
-        db.collection(housesContainers.getPlotName()).document(housesContainers.getOwner()).collection("AllHouses").document(housesContainers.getPlotName())
+        db.collection(housesContainers.getPlotName()).document(housesContainers.getOwner()).collection("AllHouses").document(housesContainers.getPlotName()+housesContainers.getHouseNumber())
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

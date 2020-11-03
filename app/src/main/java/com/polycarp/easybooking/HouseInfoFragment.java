@@ -76,6 +76,7 @@ public class HouseInfoFragment extends Fragment implements View.OnClickListener{
     private TextView tvPlotName,tvRent,tvDeposit,tvType,tvNumber,tvDescription,booked_text;
     private RelativeLayout btn_book;
     private MaterialEditText edtName;
+    private List<HousesContainers> mNewHouses;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -204,7 +205,7 @@ public class HouseInfoFragment extends Fragment implements View.OnClickListener{
     }
 
     private void getIncomingIntent() {
-        if (getArguments()!=null) {
+        if (getArguments().getString("houseImage")!=null) {
             rent = getArguments().getString("rent");
             tvRent.setText(rent);
             location = getArguments().getString("location");
@@ -237,6 +238,64 @@ public class HouseInfoFragment extends Fragment implements View.OnClickListener{
             owner = getArguments().getString("owner");
 
         }
+        else {
+            houseNumber=getArguments().getString("houseNo");
+            owner=getArguments().getString("ownerName");
+            plotName=getArguments().getString("plotName");
+            db.collectionGroup("AllHouses").whereEqualTo("houseNumber",houseNumber).whereEqualTo("owner",owner).whereEqualTo("plotName",plotName)
+                    .get()
+                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            mNewHouses = new ArrayList<>();
+                            if (!queryDocumentSnapshots.isEmpty()) {
+                                for (DocumentSnapshot snapshot : queryDocumentSnapshots)
+                                    mNewHouses.add(snapshot.toObject(HousesContainers.class));
+                                populateTextViews();
+                            } else {
+                                Toast.makeText(mContext, "House not found.", Toast.LENGTH_LONG).show();
+                            }
+
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(mContext, "Something went terribly wrong." + e, Toast.LENGTH_LONG).show();
+                        Log.d("HomeFragmentLandlord","Error " + e);
+                    });
+        }
+    }
+
+    private void populateTextViews() {
+        rent = mNewHouses.get(0).getRent();
+        tvRent.setText(rent);
+        location = mNewHouses.get(0).getLocation();
+        tvLocation.setText(location);
+        status = mNewHouses.get(0).getStatus();
+        if (status==0){
+            tvStatus.setText("Available");
+        }
+        else {
+            tvStatus.setText("Unavailable");
+        }
+        deposit = mNewHouses.get(0).getDeposit();
+        tvDeposit.setText(deposit);
+        details = mNewHouses.get(0).getDetails();
+        tvDescription.setText(details);
+        type = mNewHouses.get(0).getType();
+        tvType.setText(type);
+        phoneNo = mNewHouses.get(0).getPhoneNo();
+        tvNumber.setText(phoneNo);
+        plotName = mNewHouses.get(0).getPlotName();
+        tvPlotName.setText(plotName);
+        houseImage = mNewHouses.get(0).getHouseImage();
+        houseNumber = mNewHouses.get(0).getHouseNumber();
+//            RequestOptions requestOptions = new RequestOptions()
+//                    .placeholder(R.drawable.ic_launcher_background);
+//            Glide.with(mContext)
+//                    .setDefaultRequestOptions(requestOptions)
+//                    .load(houseImage)
+//                    .into(img);
+        owner = mNewHouses.get(0).getOwner();
     }
 
     private void getHousePhotos(){
@@ -341,21 +400,23 @@ public class HouseInfoFragment extends Fragment implements View.OnClickListener{
 
         @Override
         public void run() {
+if (getActivity()!=null){
+    getActivity().runOnUiThread(new Runnable() {
+        @Override
+        public void run() {
 
+            if (page > mHousePics.size()) { // In my case the number of pages are 5
+                timer.cancel();
+                // Showing a toast for just testing purpose
+            } else {
+                vpOffers.setCurrentItem(page++);
+            }
+        }
+    });
+}
             // As the TimerTask run on a seprate thread from UI thread we have
             // to call runOnUiThread to do work on UI thread.
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
 
-                    if (page > mHousePics.size()) { // In my case the number of pages are 5
-                        timer.cancel();
-                        // Showing a toast for just testing purpose
-                    } else {
-                        vpOffers.setCurrentItem(page++);
-                    }
-                }
-            });
 
 
         }

@@ -59,6 +59,26 @@
                     android:textColor="@color/Black"
                     android:textSize="15sp" />
 
+                <TextView
+                    android:id="@+id/phone_main_normal_booking"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:singleLine="true"
+                    android:text="Phone"
+                    android:textColor="@color/Black"
+                    android:textSize="15sp" />
+
+                <ImageButton
+                    android:id="@+id/imageButtonCall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:backgroundTint="#593A3A"
+                    android:paddingRight="8dp"
+                    card_view:srcCompat="@drawable/ic_call_black_24dp" />
+
             </LinearLayout>
 
         </RelativeLayout>

@@ -1,9 +1,12 @@
 package com.polycarp.easybooking.mainlandlord.landlordui;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -43,6 +46,15 @@ public class BookingsAdapterLandlord extends RecyclerView.Adapter<BookingsAdapte
         holder.tvName.setText("Plot name: "+mHouses.get(position).getPlotName());
         holder.tvHouseNo.setText("House number "+mHouses.get(position).getHouseNo());
         holder.tvDate.setText("Date booked "+mHouses.get(position).getDate_booked());
+        holder.tvPhone.setText("Phone No: "+mHouses.get(position).getPhoneNo());
+        holder.btnCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentCall = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel",mHouses.get(position).getPhoneNo(),null));
+                mContext.startActivity(intentCall);
+            }
+        });
+
         holder.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,13 +88,16 @@ public class BookingsAdapterLandlord extends RecyclerView.Adapter<BookingsAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private TextView tvName,tvDate,tvHouseNo;
+        private TextView tvName,tvDate,tvHouseNo,tvPhone;
         private CardView mainLayout;
+        private ImageButton btnCall;
         BookingsAdapterLandlord.OnItemsClickListener onItemsClickListener;
         public ViewHolder(@NonNull View itemView, BookingsAdapterLandlord.OnItemsClickListener onItemsClickListener) {
             super(itemView);
             this.onItemsClickListener=onItemsClickListener;
             tvName=itemView.findViewById(R.id.title_main_normal_booking);
+            tvPhone=itemView.findViewById(R.id.phone_main_normal_booking);
+            btnCall=itemView.findViewById(R.id.imageButtonCall);
             tvHouseNo=itemView.findViewById(R.id.house_number_normal_booking);
             tvDate=itemView.findViewById(R.id.date_main_normal_booking);
             mainLayout=itemView.findViewById(R.id.card_view_normal_bookings);

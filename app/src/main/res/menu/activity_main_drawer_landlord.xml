@@ -12,14 +12,14 @@
             android:id="@+id/nav_bookings"
             android:icon="@drawable/ic_menu_camera"
             android:title="Bookings" />
-        <item
-            android:id="@+id/nav_add_house"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Add House" />
-        <item
-            android:id="@+id/nav_viewHousesInPlotLandlordFragment"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="View All Houses" />
+<!--        <item-->
+<!--            android:id="@+id/nav_add_house"-->
+<!--            android:icon="@drawable/ic_menu_camera"-->
+<!--            android:title="Add House" />-->
+<!--        <item-->
+<!--            android:id="@+id/nav_viewHousesInPlotLandlordFragment"-->
+<!--            android:icon="@drawable/ic_menu_camera"-->
+<!--            android:title="View All Houses" />-->
 <!--        <item-->
 <!--            android:id="@+id/nav_gallery"-->
 <!--            android:icon="@drawable/ic_menu_gallery"-->
