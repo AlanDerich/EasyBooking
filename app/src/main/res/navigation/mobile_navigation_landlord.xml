@@ -7,22 +7,22 @@
 
     <fragment
         android:id="@+id/nav_bookings"
-        android:name="com.polycarp.easybooking.mainlandlord.landlordui.BookingsFragment"
+        android:name="com.polycarp.cheprentals.mainlandlord.landlordui.BookingsFragment"
         android:label="fragment_bookings"
         tools:layout="@layout/fragment_bookings" />
     <fragment
         android:id="@+id/nav_landlord_houses"
-        android:name="com.polycarp.easybooking.mainlandlord.landlordui.HomeFragmentLandlord"
+        android:name="com.polycarp.cheprentals.mainlandlord.landlordui.HomeFragmentLandlord"
         android:label="fragment_home_landlord"
         tools:layout="@layout/fragment_home_landlord" />
     <fragment
         android:id="@+id/nav_add_house"
-        android:name="com.polycarp.easybooking.mainlandlord.landlordui.AddHouseFragment"
+        android:name="com.polycarp.cheprentals.mainlandlord.landlordui.AddHouseFragment"
         android:label="fragment_add_house"
         tools:layout="@layout/fragment_add_house" />
     <fragment
         android:id="@+id/nav_viewHousesInPlotLandlordFragment"
-        android:name="com.polycarp.easybooking.mainlandlord.landlordui.ViewHousesInPlotLandlordFragment"
+        android:name="com.polycarp.cheprentals.mainlandlord.landlordui.ViewHousesInPlotLandlordFragment"
         android:label="fragment_view_houses_in_plot_landlord"
         tools:layout="@layout/fragment_view_houses_in_plot_landlord" />
 </navigation>

@@ -8,17 +8,25 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:120221479591:android:0a85cf521aef3cb0ada182",
+        "mobilesdk_app_id": "1:120221479591:android:50df579fecfbdb94ada182",
         "android_client_info": {
-          "package_name": "com.polycarp.easybooking"
+          "package_name": "com.polycarp.cheprentals"
         }
       },
       "oauth_client": [
         {
-          "client_id": "120221479591-pdqv5v7mubp0olhaot3qg4go2uo52pq6.apps.googleusercontent.com",
+          "client_id": "120221479591-kdhvlhjdb14p80snunpfpfda9acjsoih.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.polycarp.easybooking",
+            "package_name": "com.polycarp.cheprentals",
+            "certificate_hash": "f877b2b2ff7230eadb21aab75fe12aa900f71ca0"
+          }
+        },
+        {
+          "client_id": "120221479591-gvabkj4ib7oath023itpqp1qpjt9pl12.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.polycarp.cheprentals",
             "certificate_hash": "7fd4e3a1b95de1ee15046097487bb57a8da47691"
           }
         },
