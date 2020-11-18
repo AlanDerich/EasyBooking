@@ -7,23 +7,23 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.polycarp.cheprentals.ui.home.HomeFragment"
+        android:name="com.derich.hama.ui.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_normal_bookings"
-        android:name="com.polycarp.cheprentals.ui.bookings.BookingsFragment"
+        android:name="com.derich.hama.ui.bookings.BookingsFragment"
         android:label="Bookings"
         tools:layout="@layout/fragment_normal_bookings" />
 
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="com.polycarp.cheprentals.ui.slideshow.SlideshowFragment"
+        android:name="com.derich.hama.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
     <fragment
         android:id="@+id/nav_houseInfoFragment"
-        android:name="com.polycarp.cheprentals.HouseInfoFragment"
+        android:name="com.derich.hama.HouseInfoFragment"
         android:label="HouseInfoFragment" />
 </navigation>

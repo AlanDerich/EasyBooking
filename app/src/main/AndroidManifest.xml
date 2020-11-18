@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.polycarp.cheprentals">
+    package="com.derich.hama">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
@@ -11,14 +11,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.polycarp.cheprentals.mainlandlord.MainActivityLandlord"
+            android:name="com.derich.hama.mainlandlord.MainActivityLandlord"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="com.polycarp.cheprentals.MainActivity"
+        <activity android:name="com.derich.hama.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name="com.polycarp.cheprentals.LoginActivity"
+            android:name="com.derich.hama.LoginActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

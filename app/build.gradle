@@ -9,7 +9,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     defaultConfig {
-        applicationId "com.polycarp.cheprentals"
+        applicationId "com.derich.hama"
         minSdkVersion 22
         targetSdkVersion 30
         versionCode 1
