@@ -46,14 +46,10 @@ public class MainActivityLandlord extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                 R.id.nav_bookings,R.id.nav_landlord_houses,R.id.nav_add_house,R.id.nav_viewHousesInPlotLandlordFragment)
+                 R.id.nav_bookings,R.id.nav_landlord_houses,R.id.nav_add_house,R.id.nav_viewHousesInPlotLandlordFragment,R.id.nav_house_info, R.id.nav_viewProductFragment2,R.id.nav_sellingHouseFragment2)
                 .setDrawerLayout(drawer)
                 .build();
         checkLogIn();
-        mHeaderView=navigationView.getHeaderView(0);
-        tvUsername=mHeaderView.findViewById(R.id.drawer_main_username);
-        tvEmail=mHeaderView.findViewById(R.id.drawer_main_email);
-        imgUser=mHeaderView.findViewById(R.id.imageView_main_drawer);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_landlord);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
@@ -64,26 +60,20 @@ public class MainActivityLandlord extends AppCompatActivity {
         this.menu = menu;
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        if (mUser!=null){
-            tvEmail.setText(mUser.getEmail());
-            tvUsername.setText(mUser.getDisplayName());
-            //imgUser.setImageURI(mUser.getPhotoUrl());
-            Picasso.with(this).load(mUser.getPhotoUrl()).into(imgUser);
-        }
         return true;
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case R.id.log_out:
-                if (mUser!=null){
-                    menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.ic_logout));
-                    signOut();
-                }
-                else {
-                    Intent intent= new Intent(MainActivityLandlord.this,LoginActivity.class);
-                    startActivity(intent);
-                }
+//            case R.id.log_out:
+//                if (mUser!=null){
+//                    menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.ic_logout));
+//                    signOut();
+//                }
+//                else {
+//                    Intent intent= new Intent(MainActivityLandlord.this,LoginActivity.class);
+//                    startActivity(intent);
+//                }
             default:
                 return super.onOptionsItemSelected(item);
         }

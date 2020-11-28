@@ -8,21 +8,34 @@
     <fragment
         android:id="@+id/nav_bookings"
         android:name="com.derich.hama.mainlandlord.landlordui.BookingsFragment"
-        android:label="fragment_bookings"
+        android:label="Bookings"
         tools:layout="@layout/fragment_bookings" />
     <fragment
         android:id="@+id/nav_landlord_houses"
         android:name="com.derich.hama.mainlandlord.landlordui.HomeFragmentLandlord"
-        android:label="fragment_home_landlord"
+        android:label="Home"
         tools:layout="@layout/fragment_home_landlord" />
     <fragment
         android:id="@+id/nav_add_house"
         android:name="com.derich.hama.mainlandlord.landlordui.AddHouseFragment"
-        android:label="fragment_add_house"
+        android:label="Add House"
         tools:layout="@layout/fragment_add_house" />
     <fragment
         android:id="@+id/nav_viewHousesInPlotLandlordFragment"
         android:name="com.derich.hama.mainlandlord.landlordui.ViewHousesInPlotLandlordFragment"
-        android:label="fragment_view_houses_in_plot_landlord"
+        android:label="Houses"
         tools:layout="@layout/fragment_view_houses_in_plot_landlord" />
+    <fragment
+        android:id="@+id/nav_house_info"
+        android:name="com.derich.hama.HouseInfoFragment"
+        android:label="House Info" />
+    <fragment
+        android:id="@+id/nav_viewProductFragment2"
+        android:name="com.derich.hama.ViewProductFragment"
+        android:label="ViewProductFragment" />
+    <fragment
+        android:id="@+id/nav_sellingHouseFragment2"
+        android:name="com.derich.hama.SellingHouseFragment"
+        android:label="fragment_selling_house"
+        tools:layout="@layout/fragment_selling_house" />
 </navigation>

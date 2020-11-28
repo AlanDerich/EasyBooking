@@ -64,6 +64,20 @@
                 app:met_singleLineEllipsis="true" />
 
             <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/edtPlotOwner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Owner email"
+                android:inputType="text"
+                android:textColor="@color/colorPrimary"
+                android:textColorHint="@color/colorPrimary"
+                android:textSize="18sp"
+                app:met_baseColor="@color/colorPrimary"
+                app:met_floatingLabel="highlight"
+                app:met_maxCharacters="100"
+                app:met_primaryColor="@color/colorPrimary"
+                app:met_singleLineEllipsis="true" />
+            <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/edtPlotComments"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -1,18 +1,17 @@
 package com.derich.hama.ui.home;
 
 public class HousesContainers {
-    String rent,location,deposit,details,type,phoneNo, plotName, houseImage,owner,houseNumber;
+    String rent,location,deposit,type,phoneNo, plotName, houseImage,owner,houseNumber;
 //    String rent,location,deposit,details,type,phoneNo, plotName,plotImage;
     int status;
 
     public HousesContainers() {
     }
 
-    public HousesContainers(String rent, String location, String deposit, String details, String type, String phoneNo, String plotName, String houseImage, String owner, String houseNumber, int status) {
+    public HousesContainers(String rent, String location, String deposit, String type, String phoneNo, String plotName, String houseImage, String owner, String houseNumber, int status) {
         this.rent = rent;
         this.location = location;
         this.deposit = deposit;
-        this.details = details;
         this.type = type;
         this.phoneNo = phoneNo;
         this.plotName = plotName;
@@ -76,14 +75,6 @@ public class HousesContainers {
 
     public void setDeposit(String deposit) {
         this.deposit = deposit;
-    }
-
-    public String getDetails() {
-        return details;
-    }
-
-    public void setDetails(String details) {
-        this.details = details;
     }
 
     public String getType() {

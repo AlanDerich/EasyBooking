@@ -12,54 +12,6 @@
         android:background="#EDEAEA"
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/blue1"
-            android:elevation="10dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <RelativeLayout
-                    android:id="@+id/cart"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="@drawable/blue_onclick_dark"
-                    android:padding="10dp">
-
-                    <ImageView
-                        android:id="@+id/cart_image"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:src="@drawable/ic_baseline_shopping_cart_white"
-                        android:visibility="visible" />
-
-                    <ImageView
-                        android:id="@+id/plus_image"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:src="@drawable/ic_baseline_playlist_add_24"
-                        android:visibility="invisible" />
-
-
-                </RelativeLayout>
-
-
-            </RelativeLayout>
-
-
-        </androidx.appcompat.widget.Toolbar>
-
-
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -288,17 +240,6 @@
                         android:textSize="18sp" />
 
                 </LinearLayout>
-
-
-                <TextView
-                    android:id="@+id/tv_plot_description_house_info"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:padding="10dp"
-                    android:text="description"
-                    android:textColor="#000"
-                    android:textSize="13sp" />
 
 
                 <RelativeLayout

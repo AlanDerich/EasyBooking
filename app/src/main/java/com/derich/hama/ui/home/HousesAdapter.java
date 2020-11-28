@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,9 +53,8 @@ public class HousesAdapter extends RecyclerView.Adapter<HousesAdapter.ViewHolder
         holder.tvLocation.setText(mHouses.get(position).getLocation());
         int price = (Integer.parseInt(mHouses.get(position).getRent()));
         holder.tvPrice.setText("Rent: "+fmt.format(price));
-        holder.tvDescription.setText(mHouses.get(position).getDetails());
         RequestOptions requestOptions = new RequestOptions()
-                .placeholder(R.drawable.ic_launcher_background);
+                .placeholder(R.drawable.loader_icon);
         Glide.with(mContext)
                 .setDefaultRequestOptions(requestOptions)
                 .load(mHouses.get(position).getHouseImage())
@@ -69,7 +70,6 @@ public class HousesAdapter extends RecyclerView.Adapter<HousesAdapter.ViewHolder
             args.putString("location",mHouses.get(position).getLocation());
             args.putString("deposit",mHouses.get(position).getDeposit());
             args.putString("houseNumber",mHouses.get(position).getHouseNumber());
-            args.putString("details",mHouses.get(position).getDetails());
 
             args.putString("type",mHouses.get(position).getType());
             args.putString("phoneNo",mHouses.get(position).getPhoneNo());
@@ -80,6 +80,13 @@ public class HousesAdapter extends RecyclerView.Adapter<HousesAdapter.ViewHolder
             fragmentStaff.setArguments(args);
             transactionStaff.commit();
         });
+        holder.btnFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(mContext,"Favorited",Toast.LENGTH_SHORT).show();
+                holder.btnFavorite.setImageResource(R.drawable.ic_favorited);
+            }
+        });
     }
 
     @Override
@@ -88,17 +95,18 @@ public class HousesAdapter extends RecyclerView.Adapter<HousesAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private TextView tvName,tvLocation,tvDescription,tvPrice;
+        private TextView tvName,tvLocation,tvPrice;
         private ImageView imgCategory;
         private CardView mainLayout;
+        private ImageButton btnFavorite;
         HousesAdapter.OnItemsClickListener onItemsClickListener;
         public ViewHolder(@NonNull View itemView, HousesAdapter.OnItemsClickListener onItemsClickListener) {
             super(itemView);
             this.onItemsClickListener=onItemsClickListener;
             tvName=itemView.findViewById(R.id.titleMain);
             tvPrice=itemView.findViewById(R.id.priceMain);
+            btnFavorite=itemView.findViewById(R.id.imageButtonFavorite);
             tvLocation=itemView.findViewById(R.id.locationMain);
-            tvDescription=itemView.findViewById(R.id.descriptionMain);
             imgCategory=itemView.findViewById(R.id.imageHouse);
             mainLayout=itemView.findViewById(R.id.card_view_houses);
             itemView.setOnClickListener(this);

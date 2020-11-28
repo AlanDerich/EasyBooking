@@ -9,8 +9,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -20,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Interpolator;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
@@ -52,30 +49,24 @@ public class HouseInfoFragment extends Fragment implements View.OnClickListener{
 
     //vars
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    List<String> cats = new ArrayList<>();
-    List<String> mAllOrders = new ArrayList<>();
     Context mContext;
-    RelativeLayout mainL;
     private FirebaseUser mUser;
     //widgets
-    private RelativeLayout mCart;
     private ViewPager vpOffers;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-    private ProgressBar pbOrders;
-    private TextView tvLocation,tvDate,tvStatus,tvOrderId;
-    private RecyclerView rvViewOrder;
-    private String orderID,location,date;
+    private TextView tvLocation,tvStatus;
+    private String location;
     private int status;
     private String owner,houseImage,houseNumber,plotName,phoneNo,type;
-    private String details;
     private String deposit;
     private String rent;
     private List<HousePics> mHousePics;
+    private List<HouseBooking> mHouseBookings;
     private PagerAdapter pagerAdapter;
-    private TextView tvPlotName,tvRent,tvDeposit,tvType,tvNumber,tvDescription,booked_text;
+    private TextView tvPlotName,tvRent,tvDeposit,tvType,tvNumber,booked_text;
     private RelativeLayout btn_book;
     private MaterialEditText edtName;
     private List<HousesContainers> mNewHouses;
+    private int bookings;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -90,21 +81,7 @@ public class HouseInfoFragment extends Fragment implements View.OnClickListener{
         tvNumber = root.findViewById(R.id.tv_plot_owner_no_house_info);
         vpOffers=root.findViewById(R.id.pictures_container);
         btn_book = root.findViewById(R.id.add_to_cart);
-        tvDescription = root.findViewById(R.id.tv_plot_description_house_info);
-        btn_book.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showBookingDialog();
-            }
-        });
-
-//    if (mOrders.get(position).getStatus()==0){
-//        tvStatus.setText("Pending");
-//    }
-//    else {
-//        tvStatus.setText("Approved");
-//    }
-//        mSwipeRefreshLayout = root.findViewById(R.id.swipe_refresh_layoutViewOrders);
+        btn_book.setOnClickListener(view -> showBookingDialog());
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         mContext= getActivity();
         getIncomingIntent();
@@ -115,16 +92,29 @@ public class HouseInfoFragment extends Fragment implements View.OnClickListener{
 
     private void checkStatus() {
         db.collectionGroup("AllBookings").whereEqualTo("houseNo",houseNumber).whereEqualTo("plotName",plotName).get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        mHouseBookings = new ArrayList<>();
                         if (!queryDocumentSnapshots.isEmpty()) {
+                            for (DocumentSnapshot snapshot : queryDocumentSnapshots){
+                                mHouseBookings.add(snapshot.toObject(HouseBooking.class));
+                            }
+                        } else {
+//                            Toast.makeText(mContext, "No house photos added yet. photos you add will appear here", Toast.LENGTH_LONG).show();
+                        }
+                        if (mHouseBookings.size()>1){
+                            bookings = mHouseBookings.size();
                             booked_text.setText("House already Booked");
                             btn_book.setClickable(false);
-
-                        } else {
-                            booked_text.setText("Book house");
                         }
+                        else {
+                            if (mHouseBookings.get(0).getUsername().equals(mUser.getEmail())){
+                                booked_text.setText("You already booked this house");
+                            }
+                        }
+
+                    } else {
+                        booked_text.setText("Book house");
                     }
                 })
                 .addOnFailureListener(e -> {
@@ -136,7 +126,6 @@ public class HouseInfoFragment extends Fragment implements View.OnClickListener{
     private void showBookingDialog() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
         alertDialog.setTitle("Add new Product");
-        alertDialog.setMessage("Fill all the details.");
 
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View add_menu_layout = inflater.inflate(R.layout.add_new_item_layout,null);
@@ -152,7 +141,7 @@ public class HouseInfoFragment extends Fragment implements View.OnClickListener{
                 Date c = Calendar.getInstance().getTime();
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy h:mm a", Locale.US);
                 String formattedDate = sdf.format(c);
-                HouseBooking houseBooking=new HouseBooking(houseNumber,owner,mUser.getEmail(),formattedDate,edtName.getText().toString().trim(),plotName);
+                HouseBooking houseBooking=new HouseBooking(houseNumber,owner,mUser.getEmail(),formattedDate,edtName.getText().toString().trim(),plotName,String.valueOf(++bookings));
                 db.collection("Bookings").document(mUser.getEmail()).collection("AllBookings").document(plotName+houseNumber)
                         .set(houseBooking)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -162,7 +151,7 @@ public class HouseInfoFragment extends Fragment implements View.OnClickListener{
                                 Toast.makeText(mContext,"House booked successfully",Toast.LENGTH_LONG).show();
                                 booked_text.setText("Booked");
                                 btn_book.setClickable(false);
-                                HousesContainers mNewHouses=new HousesContainers(rent,location,deposit,details,type,phoneNo,plotName,houseImage,owner,houseNumber,1);
+                                HousesContainers mNewHouses=new HousesContainers(rent,location,deposit,type,phoneNo,plotName,houseImage,owner,houseNumber,1);
                                 db.collection(plotName).document(owner).collection("AllHouses").document(plotName+houseNumber)
                                         .set(mNewHouses)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -218,8 +207,6 @@ public class HouseInfoFragment extends Fragment implements View.OnClickListener{
             }
             deposit = getArguments().getString("deposit");
             tvDeposit.setText(deposit);
-            details = getArguments().getString("details");
-            tvDescription.setText(details);
             type = getArguments().getString("type");
             tvType.setText(type);
             phoneNo = getArguments().getString("phoneNo");
@@ -278,8 +265,6 @@ public class HouseInfoFragment extends Fragment implements View.OnClickListener{
         }
         deposit = mNewHouses.get(0).getDeposit();
         tvDeposit.setText(deposit);
-        details = mNewHouses.get(0).getDetails();
-        tvDescription.setText(details);
         type = mNewHouses.get(0).getType();
         tvType.setText(type);
         phoneNo = mNewHouses.get(0).getPhoneNo();
@@ -300,7 +285,7 @@ public class HouseInfoFragment extends Fragment implements View.OnClickListener{
     private void getHousePhotos(){
         FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
         //mProducts.addAll(Arrays.asList(Products.FEATURED_PRODUCTS));
-        db.collectionGroup("housePhotos").whereEqualTo("owner",owner).whereEqualTo("plotName",plotName).whereEqualTo("houseNumber",houseNumber).get()
+        db.collectionGroup("AllPhotos").whereEqualTo("owner",owner).whereEqualTo("plotName",plotName).whereEqualTo("houseNumber",houseNumber).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -316,24 +301,15 @@ public class HouseInfoFragment extends Fragment implements View.OnClickListener{
                         initViewPager();
                     }
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(mContext, "Something went terribly wrong." + e, Toast.LENGTH_LONG).show();
-                        Log.w("HouseInfo", "error " + e);
-                    }
+                .addOnFailureListener(e -> {
+                    Toast.makeText(mContext, "Something went terribly wrong." + e, Toast.LENGTH_LONG).show();
+                    Log.w("HouseInfo", "error " + e);
                 });
     }
 
     @Override
     public void onClick(View view) {
         switch(view.getId()){
-            case R.id.cart:{
-                //open Cart Activity
-//                Intent intent = new Intent(view.getContext(), ViewCartActivity.class);
-//                startActivity(intent);
-                break;
-            }
         }
     }
     private void initViewPager() {

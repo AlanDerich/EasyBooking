@@ -20,7 +20,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.derich.hama.Plots;
 import com.derich.hama.R;
-import com.derich.hama.mainlandlord.landlordui.ViewHousesInPlotLandlordFragment;
 
 import java.io.File;
 import java.util.List;
@@ -51,31 +50,14 @@ public class LandlordPlotsAdapter extends RecyclerView.Adapter<LandlordPlotsAdap
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         holder.tvName.setText(mPlots.get(position).getPlotName());
         holder.tvLocation.setText(mPlots.get(position).getLocation());
-        holder.tvDescription.setText(mPlots.get(position).getOtherComments());
+        holder.tvDescription.setText(mPlots.get(position).getPhoneNo());
         RequestOptions requestOptions = new RequestOptions()
-                .placeholder(R.drawable.ic_launcher_background);
+                .placeholder(R.drawable.loader_icon);
         Glide.with(mContext)
                 .setDefaultRequestOptions(requestOptions)
                 .load(mPlots.get(position).getPlotImage())
                 .into(holder.imgCategory);
-        holder.mainLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle args = new Bundle();
-                AppCompatActivity activity = (AppCompatActivity) view.getContext();
-                Fragment fragmentStaff = new ViewHousesInPlotLandlordFragment();
-                FragmentTransaction transactionStaff = activity.getSupportFragmentManager().beginTransaction();
-                transactionStaff.replace(R.id.nav_host_fragment_landlord,fragmentStaff);
-                transactionStaff.addToBackStack(null);
-                args.putString("plotName",mPlots.get(position).getPlotName());
-                args.putString("plotLocation",mPlots.get(position).getLocation());
-                args.putString("plotDetails",mPlots.get(position).getOtherComments());
-                args.putString("plotPhoneNo",mPlots.get(position).getPhoneNo());
-                args.putString("plotOwner",mPlots.get(position).getOwner());
-                fragmentStaff.setArguments(args);
-                transactionStaff.commit();
-            }
-        });
+        holder.mainLayout.setOnClickListener(view -> onItemsClickListener.onItemsClick(mPlots.get(position)));
     }
 
     @Override
@@ -101,10 +83,10 @@ public class LandlordPlotsAdapter extends RecyclerView.Adapter<LandlordPlotsAdap
         }
         @Override
         public void onClick(View view) {
-            onItemsClickListener.onItemsClick(getAdapterPosition());
+            onItemsClickListener.onItemsClick(mPlots.get(getAdapterPosition()));
         }
     }
     public interface OnItemsClickListener{
-        void onItemsClick(int position);
+        void onItemsClick(Plots mPlots);
     }
 }

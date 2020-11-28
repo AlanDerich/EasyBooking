@@ -80,11 +80,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void checkUser() {
-        mUserr= new ArrayList<>();
         final FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
         db.collectionGroup("registeredUsers").whereEqualTo("username",mUser.getEmail()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                mUserr= new ArrayList<>();
                 if (!queryDocumentSnapshots.isEmpty()) {
                     for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
                         mUserr.add(snapshot.toObject(UserDetails.class));

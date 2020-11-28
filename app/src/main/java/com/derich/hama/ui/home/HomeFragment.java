@@ -14,9 +14,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
+import com.derich.hama.OfferDetails;
+import com.derich.hama.ProductPagerAdapter;
+import com.derich.hama.ViewProductFragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -36,12 +41,16 @@ public class HomeFragment extends Fragment implements HousesAdapter.OnItemsClick
             HousesAdapter mAdapter;
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             List<HousesContainers> mHouses;
+            private List<OfferDetails> mAllOffers;
+            private ProductPagerAdapter mPagerAdapter;
             List<String> cats = new ArrayList<>();
             ProgressBar pbLoading;
             Context mContext;
             //widgets
             private RecyclerView mRecyclerView;
             FirebaseStorage storage;
+            private ViewPager mProductContainer;
+            private TabLayout mTabLayout;
             StorageReference storageReference;
             private FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -52,12 +61,47 @@ public class HomeFragment extends Fragment implements HousesAdapter.OnItemsClick
                 pbLoading = root.findViewById(R.id.progressBarNormalHouses);
                 mRecyclerView.setVisibility(View.INVISIBLE);
                 storage = FirebaseStorage.getInstance();
+                mProductContainer = root.findViewById(R.id.product_container_normal);
+                mTabLayout = root.findViewById(R.id.tab_layout_normal);
                 storageReference = storage.getReference();
 //        spCategories=root.findViewById(R.id.spinnerCategories);
                 mContext= getActivity();
+                getOffers();
                 getPlots();
                 return root;
             }
+    private void getOffers() {
+        db.collectionGroup("AllHousesOnSale").get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        mAllOffers = new ArrayList<>();
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            for (DocumentSnapshot snapshot : queryDocumentSnapshots){
+                                mAllOffers.add(snapshot.toObject(OfferDetails.class));
+                            }
+                        } else {
+//                            Toast.makeText(mContext, "No house photos added yet. photos you add will appear here", Toast.LENGTH_LONG).show();
+                        }
+                        initPagerAdapter();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(mContext, "Something went terribly wrong." + e, Toast.LENGTH_LONG).show();
+                    Log.w("HouseInfo", "error " + e);
+                });
+    }
+    private void initPagerAdapter(){
+        ArrayList<Fragment> fragments = new ArrayList<>();
+        OfferDetails products = new OfferDetails();
+        for(OfferDetails product: mAllOffers){
+            ViewProductFragment viewProductFragment = new ViewProductFragment(product,"normalUser");
+            fragments.add(viewProductFragment);
+        }
+        mPagerAdapter = new ProductPagerAdapter(getParentFragmentManager(), fragments);
+        mProductContainer.setAdapter(mPagerAdapter);
+        mTabLayout.setupWithViewPager(mProductContainer, true);
+    }
             private void getPlots(){
                 //mProducts.addAll(Arrays.asList(Products.FEATURED_PRODUCTS));
                 db.collectionGroup("AllHouses").whereEqualTo("status",0).get()

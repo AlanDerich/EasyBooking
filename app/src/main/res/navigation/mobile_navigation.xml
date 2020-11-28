@@ -18,12 +18,41 @@
         tools:layout="@layout/fragment_normal_bookings" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.derich.hama.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
-    <fragment
         android:id="@+id/nav_houseInfoFragment"
         android:name="com.derich.hama.HouseInfoFragment"
         android:label="HouseInfoFragment" />
+    <fragment
+        android:id="@+id/nav_viewProductFragment"
+        android:name="com.derich.hama.ViewProductFragment"
+        android:label="Offers" />
+    <fragment
+        android:id="@+id/nav_sellingHouseFragment"
+        android:name="com.derich.hama.SellingHouseFragment"
+        android:label="Houses on sale"
+        tools:layout="@layout/fragment_selling_house" />
+    <fragment
+        android:id="@+id/nav_search"
+        android:name="com.derich.hama.ui.SearchFragment"
+        android:label="Search"
+        tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/nav_account"
+        android:name="com.derich.hama.ui.AccountFragment"
+        android:label="Account"
+        tools:layout="@layout/fragment_account" />
+    <fragment
+        android:id="@+id/nav_help"
+        android:name="com.derich.hama.HelpFragment"
+        android:label="Help"
+        tools:layout="@layout/fragment_help" />
+    <fragment
+        android:id="@+id/nav_owner"
+        android:name="com.derich.hama.ui.OwnerFragment"
+        android:label="Owner"
+        tools:layout="@layout/fragment_owner" />
+    <fragment
+        android:id="@+id/nav_favorite"
+        android:name="com.derich.hama.ui.FavoriteFragment"
+        android:label="Favorites"
+        tools:layout="@layout/fragment_favorite" />
 </navigation>

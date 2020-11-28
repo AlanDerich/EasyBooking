@@ -1,18 +1,27 @@
 package com.derich.hama;
 
 public class HouseBooking {
-    String houseNo,ownerName,username,date_booked,phoneNo,plotName;
+    String houseNo,ownerName,username,date_booked,phoneNo,plotName,bookings;
 
     public HouseBooking() {
     }
 
-    public HouseBooking(String houseNo, String ownerName, String username, String date_booked, String phoneNo, String plotName) {
+    public HouseBooking(String houseNo, String ownerName, String username, String date_booked, String phoneNo, String plotName, String bookings) {
         this.houseNo = houseNo;
         this.ownerName = ownerName;
         this.username = username;
         this.date_booked = date_booked;
         this.phoneNo = phoneNo;
         this.plotName = plotName;
+        this.bookings = bookings;
+    }
+
+    public String getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(String bookings) {
+        this.bookings = bookings;
     }
 
     public String getPlotName() {
