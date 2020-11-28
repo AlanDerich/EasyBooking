@@ -24,6 +24,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.derich.hama.Plots;
@@ -51,6 +52,7 @@ public class SearchFragment extends Fragment implements HousesAdapter.OnItemsCli
     private CheckBox checkBoxLocation,checkBoxRent,checkBoxType;
     private Spinner spinnerLocations,spinnerRents,spinnerTypes;
     private String typeSelected,locationSelected,rentSelected,maxRentSelected,minRentSelected;
+    private TextView textViewFiltersApplied;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,6 +62,7 @@ public class SearchFragment extends Fragment implements HousesAdapter.OnItemsCli
         llFilters = root.findViewById(R.id.llAddFilters);
         imgButtonAddFilters=root.findViewById(R.id.imgButtonAddFilters);
         rvSearched=root.findViewById(R.id.rv_searched_houses);
+        textViewFiltersApplied = root.findViewById(R.id.textViewFiltersApplied);
         mContext=getActivity();
         llFilters.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -201,20 +204,24 @@ public class SearchFragment extends Fragment implements HousesAdapter.OnItemsCli
                         if (rentSelected!=null){
                             //location=true,type=true,rent=true;
                             getPlotsByLocationTypeRent();
+                            textViewFiltersApplied.setText("Location: "+locationSelected+", Type:"+ typeSelected+", Rent:" + rentSelected);
                         }
                         else {
                             //location=true,type=true,rent=false;
                             getPlotsByLocationType();
+                            textViewFiltersApplied.setText("Location: "+locationSelected+", Type:"+ typeSelected);
                         }
                     }
                     else {
                         if (rentSelected!=null){
                             //location=true,type=false,rent=true;
                             getPlotsByLocationRent();
+                            textViewFiltersApplied.setText("Location: "+locationSelected+", Rent:" + rentSelected);
                         }
                         else {
                             //location=true,type=false,rent=false;
                             getPlotsByLocation();
+                            textViewFiltersApplied.setText("Location: "+locationSelected);
                         }
                     }
                 }
@@ -223,20 +230,24 @@ public class SearchFragment extends Fragment implements HousesAdapter.OnItemsCli
                         if (rentSelected!=null){
                             //location=false,type=true,rent=true;
                             getPlotsByTypeRent();
+                            textViewFiltersApplied.setText("Type:"+ typeSelected+", Rent:" + rentSelected);
                         }
                         else {
                             //location=false,type=true,rent=false;
                             getPlotsByType();
+                            textViewFiltersApplied.setText("Type:"+ typeSelected);
                         }
                     }
                     else {
                         if (rentSelected!=null){
                             //location=false,type=false,rent=true;
                             getPlotsByRent();
+                            textViewFiltersApplied.setText("Rent:" + rentSelected);
                         }
                         else {
                             //location=false,type=false,rent=false;
                             Toast.makeText(mContext,"No Filter selected",Toast.LENGTH_SHORT).show();
+                            textViewFiltersApplied.setText("No Filter selected");
                             getPlots();
                         }
                     }
