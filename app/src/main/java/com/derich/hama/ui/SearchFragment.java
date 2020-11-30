@@ -281,7 +281,7 @@ public class SearchFragment extends Fragment implements HousesAdapter.OnItemsCli
                                 mHouses.add(snapshot.toObject(HousesContainers.class));
                             initRecyclerView();
                         } else {
-                            Toast.makeText(mContext, "No plots found matching your criteria", Toast.LENGTH_LONG).show();
+                            Toast.makeText(mContext, "No houses found matching your criteria", Toast.LENGTH_LONG).show();
                         }
                         reset();
                     }
@@ -306,7 +306,7 @@ public class SearchFragment extends Fragment implements HousesAdapter.OnItemsCli
                                 mHouses.add(snapshot.toObject(HousesContainers.class));
                             initRecyclerView();
                         } else {
-                            Toast.makeText(mContext, "No plots found matching your criteria.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(mContext, "No houses found matching your criteria.", Toast.LENGTH_LONG).show();
                         }
                         reset();
                     }
@@ -330,7 +330,7 @@ public class SearchFragment extends Fragment implements HousesAdapter.OnItemsCli
                                 mHouses.add(snapshot.toObject(HousesContainers.class));
                             initRecyclerView();
                         } else {
-                            Toast.makeText(mContext, "No plots found matching your criteria.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(mContext, "No houses found matching your criteria.", Toast.LENGTH_LONG).show();
                         }
                         reset();
                     }
@@ -354,7 +354,7 @@ public class SearchFragment extends Fragment implements HousesAdapter.OnItemsCli
                                 mHouses.add(snapshot.toObject(HousesContainers.class));
                             initRecyclerView();
                         } else {
-                            Toast.makeText(mContext, "No plots found matching your criteria.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(mContext, "No houses found matching your criteria.", Toast.LENGTH_LONG).show();
                         }
                         reset();
                     }
@@ -380,7 +380,7 @@ public class SearchFragment extends Fragment implements HousesAdapter.OnItemsCli
                                 mHouses.add(snapshot.toObject(HousesContainers.class));
                             initRecyclerView();
                         } else {
-                            Toast.makeText(mContext, "No plots found matching your criteria.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(mContext, "No houses found matching your criteria.", Toast.LENGTH_LONG).show();
                         }
                         reset();
                     }
@@ -405,7 +405,7 @@ public class SearchFragment extends Fragment implements HousesAdapter.OnItemsCli
                                 mHouses.add(snapshot.toObject(HousesContainers.class));
                             initRecyclerView();
                         } else {
-                            Toast.makeText(mContext, "No plots found matching your criteria.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(mContext, "No houses found matching your criteria.", Toast.LENGTH_LONG).show();
                         }
                         reset();
                     }
@@ -430,7 +430,7 @@ public class SearchFragment extends Fragment implements HousesAdapter.OnItemsCli
                                 mHouses.add(snapshot.toObject(HousesContainers.class));
                             initRecyclerView();
                         } else {
-                            Toast.makeText(mContext, "No plots found matching your criteria.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(mContext, "No houses found matching your criteria.", Toast.LENGTH_LONG).show();
                         }
                         reset();
                     }
@@ -458,7 +458,7 @@ public class SearchFragment extends Fragment implements HousesAdapter.OnItemsCli
                             mHousesInitial=mHouses;
                             initRecyclerView();
                         } else {
-                            Toast.makeText(mContext, "No plots found. Please add a new plot", Toast.LENGTH_LONG).show();
+                            Toast.makeText(mContext, "No houses found. Please add a new plot", Toast.LENGTH_LONG).show();
                         }
                         reset();
                     }
