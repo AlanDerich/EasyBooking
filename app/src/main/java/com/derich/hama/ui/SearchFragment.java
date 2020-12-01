@@ -29,12 +29,16 @@ import android.widget.Toast;
 
 import com.derich.hama.Plots;
 import com.derich.hama.R;
+import com.derich.hama.ui.home.Favorites;
 import com.derich.hama.ui.home.HousesAdapter;
 import com.derich.hama.ui.home.HousesContainers;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -46,8 +50,11 @@ public class SearchFragment extends Fragment implements HousesAdapter.OnItemsCli
     private LinearLayout llFilters;
     private RecyclerView rvSearched;
     private ImageButton imgButtonAddFilters;
+    List<Favorites> mFavorites;
+    List<String> mFavoriteNames;
     HousesAdapter mAdapter;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
     List<HousesContainers> mHouses,mHousesInitial;
     private CheckBox checkBoxLocation,checkBoxRent,checkBoxType;
     private Spinner spinnerLocations,spinnerRents,spinnerTypes;
@@ -71,8 +78,37 @@ public class SearchFragment extends Fragment implements HousesAdapter.OnItemsCli
             }
         });
         imgButtonAddFilters.setOnClickListener(view -> showFiltersDialog());
-        getPlots();
+        getFavorites();
         return root;
+    }
+
+    private void getFavorites() {
+        if (mUser!=null) {
+            db.collectionGroup("AllFavorites").whereEqualTo("username", mUser.getEmail()).get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        mFavorites = new ArrayList<>();
+                        mFavoriteNames=new ArrayList<>();
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                                mFavorites.add(document.toObject(Favorites.class));
+                            }
+                            int k;
+                            for (k=0;k<mFavorites.size();k++){
+                                mFavoriteNames.add(mFavorites.get(k).getPlotName()+mFavorites.get(k).getHouseNumber()+mFavorites.get(k).getOwnerName());
+
+                            }
+                        }
+                        getPlots();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(mContext, "Something went terribly wrong." + e, Toast.LENGTH_LONG).show();
+                        Log.w("SpecificService", "error " + e);
+                    });
+        }
+        else {
+//            Toast.makeText(mContext, "This section is only available for logged in customers.", Toast.LENGTH_LONG).show();
+            getPlots();
+        }
     }
 
     private void showFiltersDialog() {
@@ -473,7 +509,7 @@ public class SearchFragment extends Fragment implements HousesAdapter.OnItemsCli
     }
 
     private void initRecyclerView(){
-        mAdapter = new HousesAdapter(mHouses,this);
+        mAdapter = new HousesAdapter(mHouses,this,mFavoriteNames);
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(mContext);
         rvSearched.setLayoutManager(layoutManager);

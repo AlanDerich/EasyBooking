@@ -26,6 +26,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -41,6 +42,8 @@ public class HomeFragment extends Fragment implements HousesAdapter.OnItemsClick
             HousesAdapter mAdapter;
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             List<HousesContainers> mHouses;
+            List<Favorites> mFavorites;
+            List<String> mFavoriteNames;
             private List<OfferDetails> mAllOffers;
             private ProductPagerAdapter mPagerAdapter;
             List<String> cats = new ArrayList<>();
@@ -67,9 +70,39 @@ public class HomeFragment extends Fragment implements HousesAdapter.OnItemsClick
 //        spCategories=root.findViewById(R.id.spinnerCategories);
                 mContext= getActivity();
                 getOffers();
-                getPlots();
+                getFavorites();
                 return root;
             }
+
+    private void getFavorites() {
+        if (mUser!=null) {
+            db.collectionGroup("AllFavorites").whereEqualTo("username", mUser.getEmail()).get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        mFavorites = new ArrayList<>();
+                        mFavoriteNames=new ArrayList<>();
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                                mFavorites.add(document.toObject(Favorites.class));
+                            }
+                            int k;
+                            for (k=0;k<mFavorites.size();k++){
+                                mFavoriteNames.add(mFavorites.get(k).getPlotName()+mFavorites.get(k).getHouseNumber()+mFavorites.get(k).getOwnerName());
+
+                            }
+                        }
+                        getPlots();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(mContext, "Something went terribly wrong." + e, Toast.LENGTH_LONG).show();
+                        Log.w("SpecificService", "error " + e);
+                    });
+        }
+        else {
+//            Toast.makeText(mContext, "This section is only available for logged in customers.", Toast.LENGTH_LONG).show();
+            getPlots();
+        }
+    }
+
     private void getOffers() {
         db.collectionGroup("AllHousesOnSale").get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -102,7 +135,7 @@ public class HomeFragment extends Fragment implements HousesAdapter.OnItemsClick
         mProductContainer.setAdapter(mPagerAdapter);
         mTabLayout.setupWithViewPager(mProductContainer, true);
     }
-            private void getPlots(){
+    private void getPlots(){
                 //mProducts.addAll(Arrays.asList(Products.FEATURED_PRODUCTS));
                 db.collectionGroup("AllHouses").whereEqualTo("status",0).get()
                         .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -129,7 +162,7 @@ public class HomeFragment extends Fragment implements HousesAdapter.OnItemsClick
             }
 
             private void initRecyclerView(){
-                mAdapter = new HousesAdapter(mHouses,this);
+                mAdapter = new HousesAdapter(mHouses,this,mFavoriteNames);
                 GridLayoutManager layoutManager = new GridLayoutManager(getContext(), NUM_COLUMNS);
                 LinearLayoutManager linearLayoutManager=new LinearLayoutManager(mContext);
                 mRecyclerView.setLayoutManager(layoutManager);

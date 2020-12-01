@@ -21,6 +21,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.derich.hama.HouseInfoFragment;
 import com.derich.hama.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -30,10 +33,14 @@ public class HousesAdapter extends RecyclerView.Adapter<HousesAdapter.ViewHolder
     Context mContext;
     List<HousesContainers> mHouses;
     private HousesAdapter.OnItemsClickListener onItemsClickListener;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
     private int pos;
+    private List<String> mFavorites;
 
-    public HousesAdapter(List<HousesContainers> mHouses, HousesAdapter.OnItemsClickListener onItemsClickListener) {
+    public HousesAdapter(List<HousesContainers> mHouses, HousesAdapter.OnItemsClickListener onItemsClickListener,List <String> mFavorites) {
         this.mHouses = mHouses;
+        this.mFavorites = mFavorites;
         this.onItemsClickListener = onItemsClickListener;
     }
 
@@ -80,13 +87,55 @@ public class HousesAdapter extends RecyclerView.Adapter<HousesAdapter.ViewHolder
             fragmentStaff.setArguments(args);
             transactionStaff.commit();
         });
-        holder.btnFavorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(mContext,"Favorited",Toast.LENGTH_SHORT).show();
-                holder.btnFavorite.setImageResource(R.drawable.ic_favorited);
+        if (mFavorites!=null){
+            if (mFavorites.size()!=0){
+                for (String string : mFavorites) {
+                    if(string.equals(mHouses.get(position).getPlotName()+mHouses.get(position).getHouseNumber()+mHouses.get(position).getOwner())){
+                        holder.btnFavorite.setImageResource(R.drawable.ic_favorited);
+                    }
+                }
+            }
+        }
+
+        holder.btnFavorite.setOnClickListener(view -> {
+            if (mUser!=null){
+                if (checkIfFavorited(mHouses.get(position).getPlotName()+mHouses.get(position).getHouseNumber()+mHouses.get(position).getOwner())){
+                    db.collection("Favorites").document(mUser.getEmail()).collection("AllFavorites").document(mHouses.get(position).getPlotName()+mHouses.get(position).getHouseNumber())
+                            .delete()
+                            .addOnSuccessListener(aVoid -> {
+//                                startActivity(new Intent(getContext(), MainActivityAdmin.class));
+                                Toast.makeText(mContext,"Removed from Favorites",Toast.LENGTH_LONG).show();
+                                holder.btnFavorite.setImageResource(R.drawable.ic_favourite);
+                                mFavorites.remove(mHouses.get(position).getPlotName()+mHouses.get(position).getHouseNumber()+mHouses.get(position).getOwner());
+
+                            })
+                            .addOnFailureListener(e -> Toast.makeText(mContext,"Not removed. Try again later.",Toast.LENGTH_LONG).show());
+                }
+                else {
+                    Favorites mFav=new Favorites(mHouses.get(position).getPlotName(),mHouses.get(position).getHouseNumber(),mHouses.get(position).getOwner(),mUser.getEmail());
+                    db.collection("Favorites").document(mUser.getEmail()).collection("AllFavorites").document(mHouses.get(position).getPlotName()+mHouses.get(position).getHouseNumber())
+                            .set(mFav)
+                            .addOnSuccessListener(aVoid -> {
+//                                startActivity(new Intent(getContext(), MainActivityAdmin.class));
+                                Toast.makeText(mContext,"Added to Favorites",Toast.LENGTH_LONG).show();
+                                holder.btnFavorite.setImageResource(R.drawable.ic_favorited);
+                                mFavorites.add(mHouses.get(position).getPlotName()+mHouses.get(position).getHouseNumber()+mHouses.get(position).getOwner());
+
+                            })
+                            .addOnFailureListener(e -> Toast.makeText(mContext,"Not saved. Try again later.",Toast.LENGTH_LONG).show());
+                }
             }
         });
+    }
+    private Boolean checkIfFavorited(String ssName) {
+        if (mFavorites.size()!=0){
+            for (String string : mFavorites) {
+                if(string.equals(ssName)){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override
