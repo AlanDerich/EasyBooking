@@ -131,9 +131,11 @@ public class HomeFragment extends Fragment implements HousesAdapter.OnItemsClick
             ViewProductFragment viewProductFragment = new ViewProductFragment(product,"normalUser");
             fragments.add(viewProductFragment);
         }
-        mPagerAdapter = new ProductPagerAdapter(getParentFragmentManager(), fragments);
-        mProductContainer.setAdapter(mPagerAdapter);
-        mTabLayout.setupWithViewPager(mProductContainer, true);
+
+            mPagerAdapter = new ProductPagerAdapter(getChildFragmentManager(), fragments);
+            mProductContainer.setAdapter(mPagerAdapter);
+            mTabLayout.setupWithViewPager(mProductContainer, true);
+
     }
     private void getPlots(){
                 //mProducts.addAll(Arrays.asList(Products.FEATURED_PRODUCTS));
@@ -147,7 +149,7 @@ public class HomeFragment extends Fragment implements HousesAdapter.OnItemsClick
                                         mHouses.add(snapshot.toObject(HousesContainers.class));
                                     initRecyclerView();
                                 } else {
-                                    Toast.makeText(mContext, "No plots found. Please add a new plot", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(mContext, "No houses have been added yet.", Toast.LENGTH_LONG).show();
                                 }
                             }
                         })
