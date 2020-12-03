@@ -18,7 +18,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp">
+            android:padding="4dp">
 
             <ImageView
                 android:id="@+id/imageHouse"
@@ -46,7 +46,8 @@
                     android:id="@+id/titleMain"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="House name"
+                    android:layout_marginEnd="4dp"
+                    android:text="House type"
                     android:textColor="@color/Black"
                     android:textSize="16sp" />
 

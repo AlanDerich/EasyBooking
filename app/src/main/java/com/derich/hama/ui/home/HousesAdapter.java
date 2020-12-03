@@ -56,7 +56,7 @@ public class HousesAdapter extends RecyclerView.Adapter<HousesAdapter.ViewHolder
     public void onBindViewHolder(@NonNull HousesAdapter.ViewHolder holder, final int position) {
         Locale locale = new Locale("en","KE");
         NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
-        holder.tvName.setText(mHouses.get(position).getPlotName());
+        holder.tvName.setText(mHouses.get(position).getType());
         holder.tvLocation.setText(mHouses.get(position).getLocation());
         int price = (Integer.parseInt(mHouses.get(position).getRent()));
         holder.tvPrice.setText("Rent: "+fmt.format(price));
