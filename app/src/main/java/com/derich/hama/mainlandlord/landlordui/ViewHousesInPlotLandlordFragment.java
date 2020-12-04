@@ -6,18 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -32,8 +20,26 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.derich.hama.HouseInfoFragment;
 import com.derich.hama.HousePics;
+import com.derich.hama.LoginActivity;
+import com.derich.hama.MainActivity;
+import com.derich.hama.R;
+import com.derich.hama.UserDetails;
+import com.derich.hama.mainlandlord.LandLordHousesAdapter;
+import com.derich.hama.mainlandlord.MainActivityLandlord;
+import com.derich.hama.ui.home.HousesContainers;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -43,11 +49,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import com.derich.hama.R;
-import com.derich.hama.mainlandlord.LandLordHousesAdapter;
-import com.derich.hama.ui.home.HousesContainers;
 import com.rengwuxian.materialedittext.MaterialEditText;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -91,6 +94,8 @@ public class ViewHousesInPlotLandlordFragment extends Fragment implements LandLo
     private HousesContainers mHousesFromAdapter;
     private Button chooserBtn;
     private ProgressDialog progressDialog1;
+    private List<UserDetails> mUserr;
+    private String section;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -119,7 +124,46 @@ public class ViewHousesInPlotLandlordFragment extends Fragment implements LandLo
 //        spCategories=root.findViewById(R.id.spinnerCategories);
         mContext= getActivity();
         getPlots();
+        checkUser();
         return root;
+    }
+
+    private void checkUser() {
+        if (mUser!=null) {
+            mUserr = new ArrayList<>();
+            db.collectionGroup("registeredUsers").whereEqualTo("username", mUser.getEmail()).get().addOnSuccessListener(queryDocumentSnapshots -> {
+                if (!queryDocumentSnapshots.isEmpty()) {
+                    for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
+                        mUserr.add(snapshot.toObject(UserDetails.class));
+                    }
+                    int size = mUserr.size();
+                    int position;
+                    if (size == 1) {
+                        position = 0;
+                        UserDetails userDetails = mUserr.get(position);
+                        section = userDetails.getSection();
+                        if (section.equals("landlord")) {
+                            fabAdd.setVisibility(View.VISIBLE);
+                        } else if (section.equals("simpleUser")) {
+                            fabAdd.setVisibility(View.GONE);
+                        } else {
+                            Toast.makeText(mContext, "Error validating details. Please login again", Toast.LENGTH_LONG).show();
+                            Intent intentMpesa = new Intent(mContext, LoginActivity.class);
+                            startActivity(intentMpesa);
+                        }
+                    }
+
+                }
+            })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(mContext, "Something went terribly wrong." + e, Toast.LENGTH_LONG).show();
+                        Log.d("LoginAct", "Error" + e);
+                    });
+        }
+        else {
+            Intent intentLogin = new Intent(mContext, LoginActivity.class);
+            startActivity(intentLogin);
+        }
     }
 
     @Override
@@ -161,14 +205,11 @@ public class ViewHousesInPlotLandlordFragment extends Fragment implements LandLo
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View add_menu_layout = inflater.inflate(R.layout.add_images_layout,null);
         chooserBtn = add_menu_layout.findViewById(R.id.btnHousePicSelect);
-        chooserBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/*");
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                startActivityForResult(intent, PICK_IMAGE);
-            }
+        chooserBtn.setOnClickListener(view -> {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/*");
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+            startActivityForResult(intent, PICK_IMAGE);
         });
         progressDialog1 = new ProgressDialog(mContext);
         alertDialog.setView(add_menu_layout);
@@ -459,23 +500,35 @@ public class ViewHousesInPlotLandlordFragment extends Fragment implements LandLo
     @Override
     public void onItemsClick(HousesContainers mHousez) {
         mHousesFromAdapter = mHousez;
-        getView().setOnCreateContextMenuListener(this);
-        getView().showContextMenu();
+        if (section.equals("landlord")){
+            getView().setOnCreateContextMenuListener(this);
+            getView().showContextMenu();
+        }
+        else {
+            Bundle args = new Bundle();
+            AppCompatActivity activity = (AppCompatActivity) mContext;
+            Fragment fragmentStaff = new HouseInfoFragment();
+            FragmentTransaction transactionStaff = activity.getSupportFragmentManager().beginTransaction();
+            transactionStaff.replace(R.id.nav_host_fragment,fragmentStaff);
+            transactionStaff.addToBackStack(null);
+            args.putString("houseNo",mHousesFromAdapter.getHouseNumber());
+            args.putString("ownerName",mHousesFromAdapter.getOwner());
+            args.putString("plotName",mHousesFromAdapter.getPlotName());
+            fragmentStaff.setArguments(args);
+            transactionStaff.commit();
+        }
     }
 
 
     private void deleteItem(HousesContainers housesContainers) {
         db.collection(housesContainers.getPlotName()).document(housesContainers.getOwner()).collection("AllHouses").document(housesContainers.getPlotName()+housesContainers.getHouseNumber())
                 .delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot successfully deleted!");
-                        Toast.makeText(mContext, "successfully deleted!", Toast.LENGTH_LONG).show();
-                        mHouses.remove(housesContainers);
-                        mAdapter.notifyDataSetChanged();
-                        deleteImage(housesContainers);
-                    }
+                .addOnSuccessListener(aVoid -> {
+                    Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                    Toast.makeText(mContext, "successfully deleted!", Toast.LENGTH_LONG).show();
+                    mHouses.remove(housesContainers);
+                    mAdapter.notifyDataSetChanged();
+                    deleteImage(housesContainers);
                 })
                 .addOnFailureListener(e -> Log.w(TAG, "Error deleting document", e));
     }
@@ -483,18 +536,8 @@ public class ViewHousesInPlotLandlordFragment extends Fragment implements LandLo
     private void deleteImage(HousesContainers housesContainers) {
         FirebaseStorage mFirebaseStorage=FirebaseStorage.getInstance();
         final StorageReference imageFolder = mFirebaseStorage.getReferenceFromUrl(housesContainers.getHouseImage());
-        imageFolder.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Toast.makeText(mContext, "Image successfully deleted!", Toast.LENGTH_LONG).show();
-            }
-        })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(mContext, "Failed! "+ e, Toast.LENGTH_LONG).show();
-                    }
-                });
+        imageFolder.delete().addOnSuccessListener(aVoid -> Toast.makeText(mContext, "Image successfully deleted!", Toast.LENGTH_LONG).show())
+                .addOnFailureListener(e -> Toast.makeText(mContext, "Failed! "+ e, Toast.LENGTH_LONG).show());
     }
 
     private void deleteServices(HousesContainers housesContainers, HousesContainers mNewHouses) {
@@ -503,27 +546,14 @@ public class ViewHousesInPlotLandlordFragment extends Fragment implements LandLo
                 .addOnSuccessListener(aVoid -> {
                     db.collection(mNewHouses.getPlotName()).document(mNewHouses.getOwner()).collection("AllHouses").document(mNewHouses.getPlotName() + mNewHouses.getHouseNumber())
                             .set(mNewHouses)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
+                            .addOnSuccessListener(aVoid1 -> {
 //                                startActivity(new Intent(getContext(), MainActivityAdmin.class));
-                                    Toast.makeText(getContext(),"House updated successfully",Toast.LENGTH_LONG).show();
-                                    deleteImage(housesContainers);
-                                    //initRecyclerView();
-                                }
+                                Toast.makeText(getContext(),"House updated successfully",Toast.LENGTH_LONG).show();
+                                deleteImage(housesContainers);
+                                //initRecyclerView();
                             })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getContext(),"Not saved. Try again later.",Toast.LENGTH_LONG).show();
-                                }
-                            });
+                            .addOnFailureListener(e -> Toast.makeText(getContext(),"Not saved. Try again later.",Toast.LENGTH_LONG).show());
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error deleting document", e);
-                    }
-                });
+                .addOnFailureListener(e -> Log.w(TAG, "Error deleting document", e));
     }
 }

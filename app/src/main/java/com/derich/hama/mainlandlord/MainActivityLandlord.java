@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -18,6 +20,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.derich.hama.ui.AccountFragment;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -64,19 +67,17 @@ public class MainActivityLandlord extends AppCompatActivity {
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-//            case R.id.log_out:
-//                if (mUser!=null){
-//                    menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.ic_logout));
-//                    signOut();
-//                }
-//                else {
-//                    Intent intent= new Intent(MainActivityLandlord.this,LoginActivity.class);
-//                    startActivity(intent);
-//                }
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.ic_account) {
+            Bundle args = new Bundle();
+            AppCompatActivity activity = (AppCompatActivity) this;
+            Fragment fragmentStaff = new AccountFragment();
+            FragmentTransaction transactionStaff = activity.getSupportFragmentManager().beginTransaction();
+            transactionStaff.replace(R.id.nav_host_fragment_landlord, fragmentStaff);
+            transactionStaff.addToBackStack(null);
+            fragmentStaff.setArguments(args);
+            transactionStaff.commit();
         }
+        return super.onOptionsItemSelected(item);
     }
     public void signOut() {
         AuthUI.getInstance()

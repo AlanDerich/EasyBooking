@@ -45,8 +45,6 @@ import java.util.TimerTask;
 
 public class HouseInfoFragment extends Fragment implements View.OnClickListener{
 
-    private static final int NUM_COLUMNS = 2;
-
     //vars
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     Context mContext;
@@ -61,7 +59,6 @@ public class HouseInfoFragment extends Fragment implements View.OnClickListener{
     private String rent;
     private List<HousePics> mHousePics;
     private List<HouseBooking> mHouseBookings;
-    private PagerAdapter pagerAdapter;
     private TextView tvPlotName,tvRent,tvDeposit,tvType,tvNumber,booked_text;
     private RelativeLayout btn_book;
     private MaterialEditText edtName;
@@ -99,7 +96,8 @@ public class HouseInfoFragment extends Fragment implements View.OnClickListener{
                             for (DocumentSnapshot snapshot : queryDocumentSnapshots){
                                 mHouseBookings.add(snapshot.toObject(HouseBooking.class));
                             }
-                        } else {
+                        }
+                        else {
 //                            Toast.makeText(mContext, "No house photos added yet. photos you add will appear here", Toast.LENGTH_LONG).show();
                         }
                         if (mHouseBookings.size()>1){
@@ -110,6 +108,7 @@ public class HouseInfoFragment extends Fragment implements View.OnClickListener{
                         else {
                             if (mHouseBookings.get(0).getUsername().equals(mUser.getEmail())){
                                 booked_text.setText("You already booked this house");
+                                btn_book.setClickable(false);
                             }
                         }
 
@@ -313,7 +312,7 @@ public class HouseInfoFragment extends Fragment implements View.OnClickListener{
         }
     }
     private void initViewPager() {
-        pagerAdapter = new ScreenSlidePagerAdapter(getParentFragmentManager(),mHousePics);
+        PagerAdapter pagerAdapter = new ScreenSlidePagerAdapter(getParentFragmentManager(), mHousePics);
         vpOffers.setAdapter(pagerAdapter);
         pageSwitcher(5);
 

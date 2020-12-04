@@ -20,13 +20,12 @@
             android:orientation="vertical"
             android:weightSum="100">
 
-            <androidx.viewpager.widget.ViewPager
+            <com.derich.hama.AutoScrollViewPager
                 android:id="@+id/product_container_normal"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="30"
-                android:clickable="true"
-                android:padding="8dp" />
+                android:clickable="true" />
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tab_layout_normal"
@@ -37,7 +36,6 @@
                 app:tabGravity="center"
                 app:tabIndicatorHeight="0dp"
                 app:tabMaxWidth="6dp" />
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
