@@ -38,6 +38,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.derich.hama.ui.home.HousesContainers;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -81,7 +82,8 @@ public class SellingHouseFragment extends Fragment {
     private String name;
     private String section;
     private PagerAdapter pagerAdapter;
-    private ViewPager vpPics;
+    private AutoScrollViewPager vpPics;
+    private TabLayout mTabLayout;
 
 
     @Override
@@ -97,6 +99,7 @@ public class SellingHouseFragment extends Fragment {
         mContext=getContext();
 //        mTitle = view.findViewById(R.id.title);
         houseName = view.findViewById(R.id.offerHouseName);
+        mTabLayout= view.findViewById(R.id.tab_layout_house);
         location = view.findViewById(R.id.offerLocation);
         mDetails = view.findViewById(R.id.offerDetails);
         mNewPrice = view.findViewById(R.id.offerPrice);
@@ -139,118 +142,15 @@ public class SellingHouseFragment extends Fragment {
                 });
     }
     private void initPagerAdapter(){
-        pagerAdapter = new ScreenSlidePagerAdapter(getParentFragmentManager(),mHousePics);
+        PagerAdapter pagerAdapter = new com.derich.hama.ScreenSlidePagerAdapter(getParentFragmentManager(), mHousePics);
         vpPics.setAdapter(pagerAdapter);
-        pageSwitcher(5);
-
-        try {
-            Field mScroller;
-            mScroller = ViewPager.class.getDeclaredField("mScroller");
-            mScroller.setAccessible(true);
-            FixedSpeedScroller scroller = new FixedSpeedScroller(
-                    vpPics.getContext(), new AccelerateInterpolator());
-            // scroller.setFixedDuration(5000);
-            mScroller.set(vpPics, scroller);
-        } catch (NoSuchFieldException e) {
-        } catch (IllegalArgumentException e) {
-        } catch (IllegalAccessException e) {
-        }
-    }
-    public class HesitateInterpolator implements Interpolator {
-        public HesitateInterpolator() {
-        }
-
-        public float getInterpolation(float t) {
-            float x = 2.0f * t - 1.0f;
-            return 0.5f * (x * x * x + 1.0f);
-        }
-    }
-    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
-        private List<HousePics> mFragments;
-
-        public ScreenSlidePagerAdapter(FragmentManager fm, List<HousePics> fragments) {
-            super(fm);
-            mFragments = fragments;
-        }
-        public ScreenSlidePagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return new HousePicsFragment(mFragments.get(position).getPic());
-        }
-
-        @Override
-        public int getCount() {
-            return mFragments.size();
-        }
-    }
-    Timer timer;
-    int page = 1;
-
-    public void pageSwitcher(int seconds) {
-        timer = new Timer(); // At this line a new Thread will be created
-        timer.scheduleAtFixedRate(new RemindTask(), 0, seconds * 1000); // delay
-        // in
-        // milliseconds
-    }
-
-    // this is an inner class...
-    class RemindTask extends TimerTask {
-
-        @Override
-        public void run() {
-            if (getActivity()!=null){
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        if (page > mHousePics.size()) { // In my case the number of pages are 5
-                            timer.cancel();
-                            // Showing a toast for just testing purpose
-                        } else {
-                            vpPics.setCurrentItem(page++);
-                        }
-                    }
-                });
-            }
-            // As the TimerTask run on a seprate thread from UI thread we have
-            // to call runOnUiThread to do work on UI thread.
-
-
-
-        }
-    }
-    public class FixedSpeedScroller extends Scroller {
-
-        private int mDuration = 500;
-
-        public FixedSpeedScroller(Context context) {
-            super(context);
-        }
-
-        public FixedSpeedScroller(Context context, Interpolator interpolator) {
-            super(context, interpolator);
-        }
-
-        public FixedSpeedScroller(Context context, Interpolator interpolator,
-                                  boolean flywheel) {
-            super(context, interpolator, flywheel);
-        }
-
-        @Override
-        public void startScroll(int startX, int startY, int dx, int dy,
-                                int duration) {
-            // Ignore received duration, use fixed one instead
-            super.startScroll(startX, startY, dx, dy, mDuration);
-        }
-
-        @Override
-        public void startScroll(int startX, int startY, int dx, int dy) {
-            // Ignore received duration, use fixed one instead
-            super.startScroll(startX, startY, dx, dy, mDuration);
-        }
+        mTabLayout.setupWithViewPager(vpPics);
+        // start auto scroll
+        vpPics.startAutoScroll();
+        // set auto scroll time in mili
+        vpPics.setInterval(3000);
+        // enable recycling using true
+        vpPics.setCycle(true);
     }
     private void addPicsDialog() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);

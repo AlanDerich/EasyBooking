@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,7 +37,8 @@ import java.util.List;
 
 public class HomeFragment extends Fragment implements HousesAdapter.OnItemsClickListener{
             private static final int NUM_COLUMNS = 2;
-            private static final int AUTO_SCROLL_THRESHOLD_IN_MILLI = 1000;
+            private FragmentActivity myContext;
+            private static final int AUTO_SCROLL_THRESHOLD_IN_MILLI = 3000;
             //vars
             HousesAdapter mAdapter;
             FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -53,11 +55,13 @@ public class HomeFragment extends Fragment implements HousesAdapter.OnItemsClick
             private TabLayout mTabLayout;
             StorageReference storageReference;
             private FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+    private ProductPagerAdapter mPagerAdapter;
 
-            public View onCreateView(@NonNull LayoutInflater inflater,
+    public View onCreateView(@NonNull LayoutInflater inflater,
                                      ViewGroup container, Bundle savedInstanceState) {
                 View root = inflater.inflate(R.layout.fragment_home, container, false);
                 mRecyclerView = root.findViewById(R.id.rvAllHousesNormal);
+                myContext=(FragmentActivity) getActivity();
                 pbLoading = root.findViewById(R.id.progressBarNormalHouses);
                 mRecyclerView.setVisibility(View.INVISIBLE);
                 storage = FirebaseStorage.getInstance();
@@ -118,20 +122,20 @@ public class HomeFragment extends Fragment implements HousesAdapter.OnItemsClick
                 });
     }
     private void initPagerAdapter(){
-//        ArrayList<Fragment> fragments = new ArrayList<>();
-//        for(OfferDetails product: mAllOffers){
-//            ViewProductFragment viewProductFragment = new ViewProductFragment(product,"normalUser");
-//            fragments.add(viewProductFragment);
-//        }
-//        ProductPagerAdapter mPagerAdapter = new ProductPagerAdapter(getParentFragmentManager(), fragments);
-//        mProductContainer.setAdapter(mPagerAdapter);
-//        mTabLayout.setupWithViewPager(mProductContainer);
-//        // start auto scroll
-//        mProductContainer.startAutoScroll();
-//        // set auto scroll time in mili
-//        mProductContainer.setInterval(AUTO_SCROLL_THRESHOLD_IN_MILLI);
-//        // enable recycling using true
-//        mProductContainer.setCycle(true);
+        ArrayList<Fragment> fragments = new ArrayList<>();
+        for(OfferDetails product: mAllOffers){
+            ViewProductFragment viewProductFragment = new ViewProductFragment(product,"normalUser");
+            fragments.add(viewProductFragment);
+        }
+        mPagerAdapter = new ProductPagerAdapter(myContext.getSupportFragmentManager(), fragments);
+        mProductContainer.setAdapter(mPagerAdapter);
+        mTabLayout.setupWithViewPager(mProductContainer);
+        // start auto scroll
+        mProductContainer.startAutoScroll();
+        // set auto scroll time in mili
+        mProductContainer.setInterval(AUTO_SCROLL_THRESHOLD_IN_MILLI);
+        // enable recycling using true
+        mProductContainer.setCycle(true);
 
     }
     private void getPlots(){

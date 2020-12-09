@@ -1,25 +1,26 @@
 package com.derich.hama;
 
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class ProductPagerAdapter extends FragmentStatePagerAdapter {
+public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+    public List<HousePics> mFragments;
 
-    private ArrayList<Fragment> mFragments;
-
-    public ProductPagerAdapter(@NonNull FragmentManager fm,ArrayList<Fragment> fragments) {
+    public ScreenSlidePagerAdapter(FragmentManager fm, List<HousePics> fragments) {
         super(fm);
         mFragments = fragments;
+    }
+    public ScreenSlidePagerAdapter(FragmentManager fm) {
+        super(fm);
     }
 
     @Override
     public Fragment getItem(int position) {
-        return mFragments.get(position);
+        return new HousePicsFragment(mFragments.get(position).getPic());
     }
 
     @Override
@@ -27,16 +28,3 @@ public class ProductPagerAdapter extends FragmentStatePagerAdapter {
         return mFragments.size();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

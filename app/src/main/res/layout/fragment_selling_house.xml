@@ -15,7 +15,7 @@
             android:orientation="vertical"
             android:weightSum="100">
 
-            <androidx.viewpager.widget.ViewPager
+            <com.derich.hama.AutoScrollViewPager
                 android:id="@+id/house_product_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

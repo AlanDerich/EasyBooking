@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -50,7 +51,7 @@ public class HouseInfoFragment extends Fragment implements View.OnClickListener{
     Context mContext;
     private FirebaseUser mUser;
     //widgets
-    private ViewPager vpOffers;
+    private AutoScrollViewPager vpOffers;
     private TextView tvLocation,tvStatus;
     private String location;
     private int status;
@@ -64,12 +65,14 @@ public class HouseInfoFragment extends Fragment implements View.OnClickListener{
     private MaterialEditText edtName;
     private List<HousesContainers> mNewHouses;
     private int bookings;
+    private TabLayout mTabLayout;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_house_info, container, false);
         tvPlotName = root.findViewById(R.id.tv_plot_name_house_info);
         tvLocation = root.findViewById(R.id.tv_plot_location_house_info);
+        mTabLayout=root.findViewById(R.id.tab_layout);
         tvStatus = root.findViewById(R.id.tv_plot_status_house_info);
         tvRent = root.findViewById(R.id.tv_plot_rent_house_info);
         tvDeposit = root.findViewById(R.id.tv_plot_deposit_house_info);
@@ -314,115 +317,12 @@ public class HouseInfoFragment extends Fragment implements View.OnClickListener{
     private void initViewPager() {
         PagerAdapter pagerAdapter = new ScreenSlidePagerAdapter(getParentFragmentManager(), mHousePics);
         vpOffers.setAdapter(pagerAdapter);
-        pageSwitcher(5);
-
-        try {
-            Field mScroller;
-            mScroller = ViewPager.class.getDeclaredField("mScroller");
-            mScroller.setAccessible(true);
-            FixedSpeedScroller scroller = new FixedSpeedScroller(
-                    vpOffers.getContext(), new AccelerateInterpolator());
-            // scroller.setFixedDuration(5000);
-            mScroller.set(vpOffers, scroller);
-        } catch (NoSuchFieldException e) {
-        } catch (IllegalArgumentException e) {
-        } catch (IllegalAccessException e) {
-        }
-    }
-    public class HesitateInterpolator implements Interpolator {
-        public HesitateInterpolator() {
-        }
-
-        public float getInterpolation(float t) {
-            float x = 2.0f * t - 1.0f;
-            return 0.5f * (x * x * x + 1.0f);
-        }
-    }
-    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
-        private List<HousePics> mFragments;
-
-        public ScreenSlidePagerAdapter(FragmentManager fm, List<HousePics> fragments) {
-            super(fm);
-            mFragments = fragments;
-        }
-        public ScreenSlidePagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return new HousePicsFragment(mFragments.get(position).getPic());
-        }
-
-        @Override
-        public int getCount() {
-            return mFragments.size();
-        }
-    }
-    Timer timer;
-    int page = 1;
-
-    public void pageSwitcher(int seconds) {
-        timer = new Timer(); // At this line a new Thread will be created
-        timer.scheduleAtFixedRate(new RemindTask(), 0, seconds * 1000); // delay
-        // in
-        // milliseconds
-    }
-
-    // this is an inner class...
-    class RemindTask extends TimerTask {
-
-        @Override
-        public void run() {
-if (getActivity()!=null){
-    getActivity().runOnUiThread(new Runnable() {
-        @Override
-        public void run() {
-
-            if (page > mHousePics.size()) { // In my case the number of pages are 5
-                timer.cancel();
-                // Showing a toast for just testing purpose
-            } else {
-                vpOffers.setCurrentItem(page++);
-            }
-        }
-    });
-}
-            // As the TimerTask run on a seprate thread from UI thread we have
-            // to call runOnUiThread to do work on UI thread.
-
-
-
-        }
-    }
-    public class FixedSpeedScroller extends Scroller {
-
-        private int mDuration = 500;
-
-        public FixedSpeedScroller(Context context) {
-            super(context);
-        }
-
-        public FixedSpeedScroller(Context context, Interpolator interpolator) {
-            super(context, interpolator);
-        }
-
-        public FixedSpeedScroller(Context context, Interpolator interpolator,
-                                  boolean flywheel) {
-            super(context, interpolator, flywheel);
-        }
-
-        @Override
-        public void startScroll(int startX, int startY, int dx, int dy,
-                                int duration) {
-            // Ignore received duration, use fixed one instead
-            super.startScroll(startX, startY, dx, dy, mDuration);
-        }
-
-        @Override
-        public void startScroll(int startX, int startY, int dx, int dy) {
-            // Ignore received duration, use fixed one instead
-            super.startScroll(startX, startY, dx, dy, mDuration);
-        }
+        mTabLayout.setupWithViewPager(vpOffers);
+        // start auto scroll
+        vpOffers.startAutoScroll();
+        // set auto scroll time in mili
+        vpOffers.setInterval(3000);
+        // enable recycling using true
+        vpOffers.setCycle(true);
     }
 }

@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,6 +36,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.derich.hama.AutoScrollViewPager;
 import com.derich.hama.OfferDetails;
 import com.derich.hama.ProductPagerAdapter;
 import com.derich.hama.ViewProductFragment;
@@ -72,6 +74,7 @@ public class HomeFragmentLandlord extends Fragment implements LandlordPlotsAdapt
     //vars
     LandlordPlotsAdapter mAdapter;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private static final int AUTO_SCROLL_THRESHOLD_IN_MILLI = 3000;
     List<Plots> mPlots;
     private List<OfferDetails> mAllOffers;
     List<String> cats = new ArrayList<>();
@@ -92,7 +95,8 @@ public class HomeFragmentLandlord extends Fragment implements LandlordPlotsAdapt
     private String electricityType="none",waterType="none",wifiType="none";
     private String plotIMage;
     private ProductPagerAdapter mPagerAdapter;
-    private ViewPager mProductContainer;
+    private FragmentActivity myContext;
+    private AutoScrollViewPager mProductContainer;
     private TabLayout mTabLayout;
     private Plots mPlotFromAdapter;
     private MaterialEditText edtOfferName,edtOfferNewPrice,edtOfferLocation,edtOfferDetails,edtOfferOwner;
@@ -107,6 +111,7 @@ public class HomeFragmentLandlord extends Fragment implements LandlordPlotsAdapt
         mTabLayout = root.findViewById(R.id.tab_layout);
         pbLoading = root.findViewById(R.id.progressBarLandlordPlots);
         fabAdd=root.findViewById(R.id.fabAddPlot);
+        myContext=(FragmentActivity) getActivity();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         registerForContextMenu(mRecyclerView);
@@ -196,14 +201,19 @@ public class HomeFragmentLandlord extends Fragment implements LandlordPlotsAdapt
     }
     private void initPagerAdapter(){
         ArrayList<Fragment> fragments = new ArrayList<>();
-        OfferDetails products = new OfferDetails();
         for(OfferDetails product: mAllOffers){
             ViewProductFragment viewProductFragment = new ViewProductFragment(product,"admin");
             fragments.add(viewProductFragment);
         }
-        mPagerAdapter = new ProductPagerAdapter(getParentFragmentManager(), fragments);
+        mPagerAdapter = new ProductPagerAdapter(myContext.getSupportFragmentManager(), fragments);
         mProductContainer.setAdapter(mPagerAdapter);
-        mTabLayout.setupWithViewPager(mProductContainer, true);
+        mTabLayout.setupWithViewPager(mProductContainer);
+        // start auto scroll
+        mProductContainer.startAutoScroll();
+        // set auto scroll time in mili
+        mProductContainer.setInterval(AUTO_SCROLL_THRESHOLD_IN_MILLI);
+        // enable recycling using true
+        mProductContainer.setCycle(true);
     }
 
     private void getPlots(){
