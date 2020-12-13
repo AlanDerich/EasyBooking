@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "120221479591-m384sne65qjk4aolon1ipabuadcp25k3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.derich.hama",
+            "certificate_hash": "a4dbaea52b3937d501f3e17baefae0c3805f7b80"
+          }
+        },
+        {
           "client_id": "120221479591-q0ddo8f9bgqo32rd5fau393fpr708jmu.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

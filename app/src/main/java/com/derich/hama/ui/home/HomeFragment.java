@@ -93,7 +93,7 @@ public class HomeFragment extends Fragment implements HousesAdapter.OnItemsClick
                         getPlots();
                     })
                     .addOnFailureListener(e -> {
-                        Toast.makeText(mContext, "Something went terribly wrong." + e, Toast.LENGTH_LONG).show();
+                        displayMessage("Something went terribly wrong." + e);
                         Log.w("SpecificService", "error " + e);
                     });
         }
@@ -117,7 +117,7 @@ public class HomeFragment extends Fragment implements HousesAdapter.OnItemsClick
                     initPagerAdapter();
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(mContext, "Something went terribly wrong." + e, Toast.LENGTH_LONG).show();
+                    displayMessage("Something went terribly wrong." + e);
                     Log.w("HouseInfo", "error " + e);
                 });
     }
@@ -148,11 +148,11 @@ public class HomeFragment extends Fragment implements HousesAdapter.OnItemsClick
                                     mHouses.add(snapshot.toObject(HousesContainers.class));
                                 initRecyclerView();
                             } else {
-                                Toast.makeText(mContext, "No houses have been added yet.", Toast.LENGTH_LONG).show();
+                                displayMessage("No houses have been added yet.");
                             }
                         })
                         .addOnFailureListener(e -> {
-                            Toast.makeText(mContext, "Something went terribly wrong." + e, Toast.LENGTH_LONG).show();
+                            displayMessage("Something went terribly wrong." + e);
                             Log.d("ViewHousesFragment","Error " + e);
                         });
                 pbLoading.setVisibility(View.GONE);
@@ -171,4 +171,7 @@ public class HomeFragment extends Fragment implements HousesAdapter.OnItemsClick
             public void onItemsClick(int position) {
 
             }
+    private void displayMessage(String message){
+        Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();
+    }
         }
